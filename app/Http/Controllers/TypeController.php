@@ -10,4 +10,8 @@ class TypeController extends Controller
     {
         return view('types.index');
     }
+    public function check()
+    {
+        return view('types.check');
+    }
 }

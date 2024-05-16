@@ -4,20 +4,15 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Models\Type;
-use Illuminate\Support\Str;
 
-class TypeApiController extends Controller
+class DashboardApiController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        $types = Type::orderBy('created_at', 'desc')->get();
-        return response()->json([
-            "types" =>  $types,
-        ], 200);
+        //
     }
 
     /**
@@ -25,14 +20,7 @@ class TypeApiController extends Controller
      */
     public function store(Request $request)
     {
-        // dd($request->all());
-        Type::create([
-            'uuid' => Str::uuid(),
-            'type' => $request->type,
-        ]);
-        return response()->json([
-            "msg" =>  'Successfull',
-        ], 200);
+        //
     }
 
     /**

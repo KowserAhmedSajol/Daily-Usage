@@ -4,19 +4,21 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Models\Usage;
 use App\Models\Type;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 
-class TypeApiController extends Controller
+class UsageApiController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        $types = Type::orderBy('created_at', 'desc')->get();
+        $usages = Usage::with('type')->orderBy('created_at', 'desc')->get();
         return response()->json([
-            "types" =>  $types,
+            "usages" =>  $usages,
         ], 200);
     }
 
@@ -25,10 +27,15 @@ class TypeApiController extends Controller
      */
     public function store(Request $request)
     {
-        // dd($request->all());
-        Type::create([
+        // dd();
+        Usage::create([
             'uuid' => Str::uuid(),
-            'type' => $request->type,
+            'user_id' => Auth::id(),
+            'title' => $request->title,
+            'actual_amount' => $request->actual_amount,
+            'estimated_amount' => $request->estimated_amount,
+            'type_id' => $request->type,
+            'remark' => $request->remark,
         ]);
         return response()->json([
             "msg" =>  'Successfull',

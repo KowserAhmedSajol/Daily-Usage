@@ -3,6 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\TypeApiController;
+use App\Http\Controllers\Api\UsageApiController;
 
 /*
 |--------------------------------------------------------------------------
@@ -19,7 +20,18 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::group(['prefix' => 'types', 'as' => 'types.'], function () {
-    Route::post('/add', [TypeApiController::class, 'store']);
-    Route::get('/all', [TypeApiController::class, 'index']);
+Route::middleware(['web', 'auth'])->group(function () {
+// Route::middleware('auth')->group(function () {
+    
+    Route::prefix('types')->group(function(){
+    // Route::group(['prefix' => 'types', 'as' => 'types.'], function () {
+        Route::post('/add', [TypeApiController::class, 'store']);
+        Route::get('/all', [TypeApiController::class, 'index']);
+    });
+    
+    Route::prefix('usage')->group(function(){
+    // Route::group(['prefix' => 'usage', 'as' => 'usage.'], function () {
+        Route::get('/all', [UsageApiController::class, 'index']);
+        Route::post('/store', [UsageApiController::class, 'store']);
+    });
 });
