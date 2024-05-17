@@ -205,7 +205,13 @@ Reports-Dashboard
 
 
 @section('css')
-
+<style>
+	legend {
+        
+		padding-bottom:4px !important;
+		margin-bottom:10px !important;
+	}
+</style>
 @endsection
 
 
