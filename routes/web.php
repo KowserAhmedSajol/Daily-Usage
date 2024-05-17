@@ -3,6 +3,7 @@
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\TypeController;
+use App\Http\Controllers\ReportController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -36,7 +37,9 @@ Route::middleware('auth')->group(function () {
     Route::group(['prefix' => 'types', 'as' => 'types.'], function () {
         Route::get('/', [TypeController::class, 'index'])->name('index');
     });
-    Route::get('/check', [TypeController::class, 'check']);
+    Route::group(['prefix' => 'reports', 'as' => 'reports.'], function () {
+        Route::get('/', [ReportController::class, 'index'])->name('index');
+    });
 });
 
 require __DIR__.'/auth.php';

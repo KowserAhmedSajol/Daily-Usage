@@ -82,13 +82,29 @@
 								</span>
 							</a>
 						</li>
-						<li class="nav-item">
-							<a href="{{ route('types.index') }}" class="nav-link {{ request()->is('types*') ? 'active' : '' }}">
+						{{-- <li class="nav-item">
+							<a href="{{ route('reports.index') }}" class="nav-link {{ request()->is('reports*') ? 'active' : '' }}">
 								<i class="icon-flip-horizontal2"></i>
 								<span>
 									Reports
 								</span>
 							</a>
+						</li> --}}
+						
+						<li class="nav-item nav-item-submenu nav-item-open">
+							<a href="#" class="nav-link legitRipple {{ request()->is('reports*') ? 'active' : '' }}"><i class="icon-insert-template"></i> <span>Reports</span></a>
+							<ul class="nav nav-group-sub" data-submenu-title="Form layouts" style="display: block;">
+								<li class="nav-item">
+									<a href="{{ route('reports.index') }}" class="nav-link legitRipple {{ request()->is('reports') ? 'active' : '' }}">
+										<i class="icon-chess"></i>
+										<span>
+											Dashboard
+										</span>
+									</a>
+								</li>
+								<li class="nav-item-divider"></li>
+								<li class="nav-item"><a href="form_layout_horizontal.html" class="nav-link legitRipple">Horizontal form</a></li>
+							</ul>
 						</li>
 						<!-- /main -->
 
