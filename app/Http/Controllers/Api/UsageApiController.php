@@ -11,23 +11,16 @@ use Illuminate\Support\Str;
 
 class UsageApiController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
-        $usages = Usage::with('type')->orderBy('created_at', 'desc')->get();
+        $usages = Usage::with('type')->where('user_id',Auth::id())->orderBy('created_at', 'desc')->get();
         return response()->json([
             "usages" =>  $usages,
         ], 200);
     }
-
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
-        // dd();
+        // dd($request->date);
         Usage::create([
             'uuid' => Str::uuid(),
             'user_id' => Auth::id(),
@@ -35,34 +28,12 @@ class UsageApiController extends Controller
             'actual_amount' => $request->actual_amount,
             'estimated_amount' => $request->estimated_amount,
             'type_id' => $request->type,
+            'date' => $request->date,
+            'important' => $request->important,
             'remark' => $request->remark,
         ]);
         return response()->json([
             "msg" =>  'Successfull',
         ], 200);
-    }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        //
     }
 }

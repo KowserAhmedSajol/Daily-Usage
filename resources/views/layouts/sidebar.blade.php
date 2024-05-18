@@ -75,6 +75,14 @@
 							</a>
 						</li>
 						<li class="nav-item">
+							<a href="{{ route('expence.index') }}" class="nav-link {{ request()->is('expence*') ? 'active' : '' }}">
+								<i class="icon-folder-plus"></i>
+								<span>
+									Expences
+								</span>
+							</a>
+						</li>
+						<li class="nav-item">
 							<a href="{{ route('types.index') }}" class="nav-link {{ request()->is('types*') ? 'active' : '' }}">
 								<i class="icon-flip-horizontal2"></i>
 								<span>
@@ -103,7 +111,14 @@
 									</a>
 								</li>
 								<li class="nav-item-divider"></li>
-								<li class="nav-item"><a href="form_layout_horizontal.html" class="nav-link legitRipple">Horizontal form</a></li>
+								<li class="nav-item">
+									<a href="{{ route('reports.date-wise-daily-report') }}" class="nav-link legitRipple {{ request()->is('reports.date-wise-daily-report') ? 'active' : '' }}">
+										<i class="icon-copy"></i>
+										<span>
+											Date Wise Daily Report
+										</span>
+									</a>
+								</li>
 							</ul>
 						</li>
 						<!-- /main -->

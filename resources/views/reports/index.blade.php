@@ -137,10 +137,10 @@ Reports-Dashboard
         <h5 class="mb-3">Reports</h5>
         <div class="row row-tile no-gutters">
             <div class="col-3">
-                <button type="button" class="btn bg-white btn-block btn-float m-0 legitRipple">
+                <a href="{{ route('reports.date-wise-daily-report') }}" target="_blank" style="text-decoration: none" class="btn bg-white btn-block btn-float m-0 legitRipple">
                     <i class="icon-calendar icon-2x"></i>
                     <span>Date wise Daily Report</span>
-                </button>
+                </a>
 
                 <button type="button" class="btn bg-white btn-block btn-float m-0 legitRipple">
                     <i class="icon-dropbox text-blue-400 icon-2x"></i>

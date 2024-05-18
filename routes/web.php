@@ -4,6 +4,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\TypeController;
 use App\Http\Controllers\ReportController;
+use App\Http\Controllers\UsageController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -31,7 +32,9 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
-
+    Route::group(['prefix' => 'expence', 'as' => 'expence.'], function () {
+        Route::get('/', [UsageController::class, 'index'])->name('index');
+    });
 
     
     Route::group(['prefix' => 'types', 'as' => 'types.'], function () {
@@ -39,7 +42,9 @@ Route::middleware('auth')->group(function () {
     });
     Route::group(['prefix' => 'reports', 'as' => 'reports.'], function () {
         Route::get('/', [ReportController::class, 'index'])->name('index');
+        Route::get('/date-wise-daily-report', [ReportController::class, 'dateWiseDailyReport'])->name('date-wise-daily-report');
     });
+
 });
 
 require __DIR__.'/auth.php';

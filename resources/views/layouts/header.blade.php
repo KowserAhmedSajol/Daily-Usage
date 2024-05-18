@@ -12,11 +12,11 @@
 	<!-- Global stylesheets -->
 	<link href="https://fonts.googleapis.com/css?family=Roboto:400,300,100,500,700,900" rel="stylesheet" type="text/css">
 	<link href="../../../../global_assets/css/icons/icomoon/styles.min.css" rel="stylesheet" type="text/css">
-	<link href="assets/css/bootstrap.min.css" rel="stylesheet" type="text/css">
-	<link href="assets/css/bootstrap_limitless.min.css" rel="stylesheet" type="text/css">
-	<link href="assets/css/layout.min.css" rel="stylesheet" type="text/css">
-	<link href="assets/css/components.min.css" rel="stylesheet" type="text/css">
-	<link href="assets/css/colors.min.css" rel="stylesheet" type="text/css">
+	<link href="../../../../assets/css/bootstrap.min.css" rel="stylesheet" type="text/css">
+	<link href="../../../../assets/css/bootstrap_limitless.min.css" rel="stylesheet" type="text/css">
+	<link href="../../../../assets/css/layout.min.css" rel="stylesheet" type="text/css">
+	<link href="../../../../assets/css/components.min.css" rel="stylesheet" type="text/css">
+	<link href="../../../../assets/css/colors.min.css" rel="stylesheet" type="text/css">
     @yield('css')
 	<!-- /global stylesheets -->
 
@@ -50,6 +50,8 @@
 	<script src="{{ asset('global_assets/js/plugins/extensions/jquery_ui/interactions.min.js') }}"></script>
 	<script src="{{ asset('global_assets/js/plugins/forms/selects/select2.min.js') }}"></script>
 	<script src="{{ asset('global_assets/js/demo_pages/form_select2.js') }}"></script> 
+	
+
 	
 	<!-- /theme JS files -->
 

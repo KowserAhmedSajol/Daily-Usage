@@ -19,6 +19,8 @@ return new class extends Migration
             $table->string('title')->nullable();
             $table->string('actual_amount')->nullable();
             $table->string('estimated_amount')->nullable();
+            $table->string('date')->nullable();
+            $table->boolean('important')->nullable();
             $table->string('remark')->nullable();
             $table->timestamps();
         });

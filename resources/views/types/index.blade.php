@@ -85,23 +85,16 @@ Types
 	$(document).ready(function() {
 			loadTable();
 			$(document).on('click','#submitBtn', addData);
-			
-			
-
-
-			
-
-		});
+	});
 
 		function loadTable()
 		{
 			document.querySelector('#tbody').innerHTML = '';
 			const tr = document.createElement('tr');
-				tr.innerHTML = `
-					<td colspan="5" class="text-center"><i class="icon-spinner6 spinner mr-2"></i></td>
-					
-				`;
-				tbody.appendChild(tr);
+			tr.innerHTML = `
+				<td colspan="5" class="text-center"><i class="icon-spinner6 spinner mr-2"></i></td>
+			`;
+			tbody.appendChild(tr);
 			
 			$.ajax({
 					url      : `/api/types/all`,

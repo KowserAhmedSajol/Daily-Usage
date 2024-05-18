@@ -4,6 +4,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\TypeApiController;
 use App\Http\Controllers\Api\UsageApiController;
+use App\Http\Controllers\Api\ReportApiController;
 
 /*
 |--------------------------------------------------------------------------
@@ -30,8 +31,10 @@ Route::middleware(['web', 'auth'])->group(function () {
     });
     
     Route::prefix('usage')->group(function(){
-    // Route::group(['prefix' => 'usage', 'as' => 'usage.'], function () {
         Route::get('/all', [UsageApiController::class, 'index']);
         Route::post('/store', [UsageApiController::class, 'store']);
+    });
+    Route::prefix('report')->group(function(){
+        Route::post('/date-wise-daily-report', [ReportApiController::class, 'dateWiseDailyReport']);
     });
 });

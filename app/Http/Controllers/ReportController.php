@@ -25,4 +25,8 @@ class ReportController extends Controller
         
         return view('reports.index',compact('total','lastMonthTotal'));
     }
+    public function dateWiseDailyReport()
+    {
+        return view('reports.date-wise-daily-report');
+    }
 }
