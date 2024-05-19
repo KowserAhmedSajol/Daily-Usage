@@ -1,14 +1,14 @@
 @extends('layouts.main')
 @section('header.title')
-Expence: Add New Expence
+Income: Add New Income
 @endsection
 
 @section('main')
 
-
+<button type="button" class="btn btn-light" id="pnotify-stack-bottom-right">Launch <i class="icon-play3 ml-2"></i></button>
 <div class="card">
 	<div class="card-header header-elements-inline">
-		<h5 class="card-title">Add New Expence</h5>
+		<h5 class="card-title">Add New Income</h5>
 		<div class="header-elements">
 			<div class="list-icons">
 				<a class="list-icons-item" data-action="collapse"></a>
@@ -21,7 +21,7 @@ Expence: Add New Expence
 	<div class="card-body">
 
 		<div class="row">
-			<div class="col-md-3">
+			<div class="col-md-4">
 				<div class="form-group form-group-float">
 					<label class="form-group-float-label animate">Title</label>
 					<div class="input-group">
@@ -32,37 +32,26 @@ Expence: Add New Expence
 					</div>
 				</div>
 			</div>
-			<div class="col-md-3">
+			<div class="col-md-4">
 				<div class="form-group form-group-float">
-					<label class="form-group-float-label animate">Actual Amount</label>
+					<label class="form-group-float-label animate">Amount</label>
 					<div class="input-group">
 						<span class="input-group-prepend">
 							<span class="input-group-text"><i class="icon-coins"></i></span>
 						</span>
-						<input id="actual_amount" type="text" class="form-control" placeholder="Add Actual Amount*">
+						<input id="amount" type="text" class="form-control" placeholder="Add Amount*">
 					</div>
 				</div>
 			</div>
-			<div class="col-md-3">
-				<div class="form-group form-group-float">
-					<label class="form-group-float-label animate">Estimated Amount</label>
-					<div class="input-group">
-						<span class="input-group-prepend">
-							<span class="input-group-text"><i class="icon-coins"></i></span>
-						</span>
-						<input id="estimated_amount" type="text" class="form-control" placeholder="Add Estimated Amount*">
-					</div>
-				</div>
-			</div>
-			<div class="col-md-3">
+			<div class="col-md-4">
 				<div class="form-group form-group-float">
 					<label class="form-group-float-label animate">Type</label>
 					<div class="input-group">
 						<span style="width:100%">
-							<select id="type" data-placeholder="Select a Type..."  class="form-control select-search" data-fouc>
+							<select id="income_type_id" data-placeholder="Select an Income Type..."  class="form-control select-search" data-fouc>
 									<option></option>
-									@foreach ($types as $type)
-									<option value="{{ $type->id }}">{{ $type->type }}</option>
+									@foreach ($incomeTypes as $type)
+									<option value="{{ $type->id }}">{{ $type->income_type }}</option>
 									@endforeach
 							</select>
 						</span>
@@ -80,21 +69,13 @@ Expence: Add New Expence
 					</div>
 				</div>
 			</div>
-			<div class="col-md-5 mt-4">
+			<div class="col-md-6 mt-4">
 				<div class="form-group form-group-float">
                     <input type="text" id="pickDate" class="form-control pickadate" placeholder="Date&hellip;">
 				</div>
 			</div>
-			<div class="col-md-1 mt-4">
-				<div class="form-check">
-                    <label class="form-check-label">
-                        <input id="important" type="checkbox" class="form-check-input-styled-info" checked data-fouc>
-                        Is Important?
-                    </label>
-                </div>
-			</div>
 			<div class="col-md-12 text-center">
-				<button id="submitBtn" type="button" class="btn bg-teal-400 btn-labeled btn-labeled-left legitRipple"><b><i id="addBtnIcon" class="icon-plus3"></i></b> Add New Expence</button>
+				<button id="submitBtn" type="button" class="btn bg-teal-400 btn-labeled btn-labeled-left legitRipple"><b><i id="addBtnIcon" class="icon-plus3"></i></b> Add New Income</button>
 			</div>
 		</div>
 
@@ -102,7 +83,7 @@ Expence: Add New Expence
 </div>
 <div class="card">
 	<div class="card-header header-elements-inline">
-		<h5 class="card-title">Expences</h5>
+		<h5 class="card-title">Incomes</h5>
 		<div class="header-elements">
 			<div class="list-icons">
 				<a class="list-icons-item" data-action="collapse"></a>
@@ -122,8 +103,7 @@ Expence: Add New Expence
 						<th class="text-center">SL</th>
 						<th class="text-center">Title</th>
 						<th class="text-center">Actual Amount</th>
-						<th class="text-center">Estimated Amount</th>
-						<th class="text-center">Type</th>
+						<th class="text-center">Income Type</th>
 						<th class="text-center">Date</th>
 						<th class="text-center">Remark</th>
 					</tr>
@@ -139,7 +119,6 @@ Expence: Add New Expence
 
 
 @section('css')
-
 @endsection
 
 
@@ -150,7 +129,6 @@ Expence: Add New Expence
 <script src="../../../../global_assets/js/plugins/forms/styling/switch.min.js"></script>
 
 <script src="../../../../global_assets/js/demo_pages/form_checkboxes_radios.js"></script>
-
 
 <script src="../../../../global_assets/js/plugins/ui/moment/moment.min.js"></script>
 <script src="../../../../global_assets/js/plugins/pickers/daterangepicker.js"></script>
@@ -164,7 +142,9 @@ Expence: Add New Expence
 
 
 
-<script>
+<script> 
+	Pnotify.init();
+	// SweetAlert.initComponents();
 	$(document).ready(function() {
 			loadTable();
 			$(document).on('click','#submitBtn', addData);  
@@ -178,7 +158,32 @@ Expence: Add New Expence
             document.getElementById('pickDate').value = formattedToday;
 
 		});
-	function loadTable()
+
+
+		function show_stack_bottom_right(type) {
+			
+			var stack_bottom_right = {"dir1": "left", "dir2": "up", "firstpos1": 20, "firstpos2": 20};
+			var stack_bottom_right_rtl = {"dir1": "right", "dir2": "up", "firstpos1": 20, "firstpos2": 20};
+            var opts = {
+                title: "Over here",
+                text: "Check me out. I'm in a different stack.",
+                addclass: "stack-bottom-right bg-primary border-primary",
+                stack: $('html').attr('dir') == 'rtl' ? stack_bottom_right_rtl : stack_bottom_right
+            };
+            switch (type) {
+                
+                case 'danger':
+                opts.title = "Oh No danger";
+                opts.text = "Watch out for that water tower!";
+                opts.addclass = "stack-bottom-right bg-danger border-danger";
+                opts.type = "error";
+                break;
+            }
+            new PNotify(opts);
+        }
+
+
+		function loadTable()
 		{
             document.querySelector('#tbody').innerHTML = '';
 			const tr = document.createElement('tr');
@@ -187,7 +192,7 @@ Expence: Add New Expence
 			`;
 			tbody.appendChild(tr);
 			$.ajax({
-				url      : `/api/usage/all`,
+				url      : `/api/income/all`,
 				method   : "GET",
 				dataType : "JSON", 
 				headers: {
@@ -202,24 +207,16 @@ Expence: Add New Expence
 						const options = { day: 'numeric', month: 'long', year: 'numeric' };
 						return new Date(dateString).toLocaleDateString('en-US', options);
 					};
-					data.usages.forEach(usage => {
+					data.incomes.forEach(income => {
 						const tr = document.createElement('tr');
-						if(usage.actual_amount > usage.estimated_amount)
-						{
-							tr.classList.add('table-danger');
-						}else if(usage.actual_amount < usage.estimated_amount){
-							tr.classList.add('table-success');
-						}else if(usage.actual_amount == usage.estimated_amount){
-							tr.classList.add('table-info');
-						}
+						
 						tr.innerHTML = `
 								<td class="text-center">${serialNumber++}</td>
-								<td class="text-center">${usage.title}</td>
-								<td class="text-center">${usage.actual_amount}</td>
-								<td class="text-center">${usage.estimated_amount}</td>
-								<td class="text-center">${usage.type.type}</td>
-								<td class="text-center">${formatDate(usage.created_at)}</td>
-								<td class="text-center">${usage.remark ?? ''}</td>
+								<td class="text-center">${income.title}</td>
+								<td class="text-center">${income.amount}</td>
+								<td class="text-center">${income.income_type.income_type}</td>
+								<td class="text-center">${income.date}</td>
+								<td class="text-center">${income.remark ?? ''}</td>
 						`;
 						tbody.appendChild(tr);
 					});
@@ -244,29 +241,28 @@ Expence: Add New Expence
 
 			let data = {};
 			data.title                  = $('#title').val();
-			data.actual_amount          = $('#actual_amount').val();
-			data.estimated_amount       = $('#estimated_amount').val();
-			data.type                   = $('#type').val();
+			data.amount          		= $('#amount').val();
+			data.income_type_id         = $('#income_type_id').val();
 			data.remark                 = $('#remark').val();
 			data.date                   = $('#pickDate').val();
-			data.important              = $('#important').prop('checked') == true ? '1': '0';
-			
-			if(data.actual_amount == null ||data.actual_amount == '' ){
+
+			if(data.amount == null ||data.amount == '' ){
 				new PNotify(
 					{
-						title: "<i class='icon-cash'></i> Actual Amount Input Error",
-						text: "Actual Amount Must not be Null",
+						title: "<i class='icon-cash2'></i> Amount Input Error",
+						text: "Amount Must not be Null",
 						addclass: "stack-bottom-right bg-danger border-danger",
 						stack: $('html').attr('dir') == 'rtl' ? stack_bottom_right_rtl : stack_bottom_right
 					}
 				);
 				return false;
 			}
-			if(data.type == null ||data.type == '' ){
+			
+			if(data.income_type_id == null ||data.income_type_id == '' ){
 				new PNotify(
 					{
-						title: "<i class='icon-flip-horizontal2'></i> Type Input Error",
-						text: "Type Must not be Null",
+						title: "<i class='icon-flip-horizontal2'></i>Type Input Error",
+						text: "Income Type Must not be Null",
 						addclass: "stack-bottom-right bg-danger border-danger",
 						stack: $('html').attr('dir') == 'rtl' ? stack_bottom_right_rtl : stack_bottom_right
 					}
@@ -274,7 +270,7 @@ Expence: Add New Expence
 				return false;
 			}
             $.ajax({
-                url      : `/api/usage/store`,
+                url      : `/api/income/store`,
                 method   : "POST",
                 data     : data,
                 dataType : "JSON",
@@ -286,9 +282,8 @@ Expence: Add New Expence
                     console.log('success');
                     loadTable();
                     $('#title').val('');
-                    $('#actual_amount').val('');
-                    $('#estimated_amount').val('');
-                    $('#type').val('');
+                    $('#amount').val('');
+                    $('#income_type_id').val('');
                     $('#remark').val('');
                     var addBtnIcon = document.getElementById('addBtnIcon');
                     addBtnIcon.classList.remove('icon-spinner9');

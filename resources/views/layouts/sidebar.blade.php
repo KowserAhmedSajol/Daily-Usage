@@ -83,6 +83,14 @@
 							</a>
 						</li>
 						<li class="nav-item">
+							<a href="{{ route('income.index') }}" class="nav-link {{ request()->is('income') ? 'active' : '' }}">
+								<i class="icon-folder-plus"></i>
+								<span>
+									Income
+								</span>
+							</a>
+						</li>
+						<li class="nav-item">
 							<a href="{{ route('types.index') }}" class="nav-link {{ request()->is('types*') ? 'active' : '' }}">
 								<i class="icon-flip-horizontal2"></i>
 								<span>
@@ -90,18 +98,18 @@
 								</span>
 							</a>
 						</li>
-						{{-- <li class="nav-item">
-							<a href="{{ route('reports.index') }}" class="nav-link {{ request()->is('reports*') ? 'active' : '' }}">
+						<li class="nav-item">
+							<a href="{{ route('income_types.index') }}" class="nav-link {{ request()->is('income_types*') ? 'active' : '' }}">
 								<i class="icon-flip-horizontal2"></i>
 								<span>
-									Reports
+									Income Types
 								</span>
 							</a>
-						</li> --}}
+						</li>
 						
-						<li class="nav-item nav-item-submenu nav-item-open">
-							<a href="#" class="nav-link legitRipple {{ request()->is('reports*') ? 'active' : '' }}"><i class="icon-insert-template"></i> <span>Reports</span></a>
-							<ul class="nav nav-group-sub" data-submenu-title="Form layouts" style="display: block;">
+						<li class="nav-item nav-item-submenu">
+							<a href="" class="nav-link legitRipple {{ request()->is('reports*') ? 'active' : '' }}"><i class="icon-insert-template"></i> <span>Reports</span></a>
+							<ul class="nav nav-group-sub" data-submenu-title="Reports">
 								<li class="nav-item">
 									<a href="{{ route('reports.index') }}" class="nav-link legitRipple {{ request()->is('reports') ? 'active' : '' }}">
 										<i class="icon-chess"></i>
@@ -115,15 +123,13 @@
 									<a href="{{ route('reports.date-wise-daily-report') }}" class="nav-link legitRipple {{ request()->is('reports.date-wise-daily-report') ? 'active' : '' }}">
 										<i class="icon-copy"></i>
 										<span>
-											Date Wise Daily Report
+											Date Wise Daily Expence Report
 										</span>
 									</a>
 								</li>
 							</ul>
 						</li>
 						<!-- /main -->
-
-
 					</ul>
 				</div>
 				<!-- /main navigation -->

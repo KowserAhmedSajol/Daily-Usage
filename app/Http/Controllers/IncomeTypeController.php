@@ -4,10 +4,10 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
-class TypeController extends Controller
+class IncomeTypeController extends Controller
 {
     public function index()
     {
-        return view('types.index');
+        return view('income_types.index');
     }
 }

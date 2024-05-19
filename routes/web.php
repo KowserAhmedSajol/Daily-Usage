@@ -3,8 +3,10 @@
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\TypeController;
+use App\Http\Controllers\IncomeTypeController;
 use App\Http\Controllers\ReportController;
 use App\Http\Controllers\UsageController;
+use App\Http\Controllers\IncomeController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -35,10 +37,16 @@ Route::middleware('auth')->group(function () {
     Route::group(['prefix' => 'expence', 'as' => 'expence.'], function () {
         Route::get('/', [UsageController::class, 'index'])->name('index');
     });
+    Route::group(['prefix' => 'income', 'as' => 'income.'], function () {
+        Route::get('/', [IncomeController::class, 'index'])->name('index');
+    });
 
     
     Route::group(['prefix' => 'types', 'as' => 'types.'], function () {
         Route::get('/', [TypeController::class, 'index'])->name('index');
+    });
+    Route::group(['prefix' => 'income_types', 'as' => 'income_types.'], function () {
+        Route::get('/', [IncomeTypeController::class, 'index'])->name('index');
     });
     Route::group(['prefix' => 'reports', 'as' => 'reports.'], function () {
         Route::get('/', [ReportController::class, 'index'])->name('index');

@@ -11,11 +11,15 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('types', function (Blueprint $table) {
+        Schema::create('incomes', function (Blueprint $table) {
             $table->id();
-            $table->uuid();
+            $table->uuid('uuid');
             $table->unsignedBigInteger('user_id');
-            $table->string('type');
+            $table->unsignedBigInteger('income_type_id');
+            $table->string('title')->nullable();
+            $table->string('amount')->nullable();
+            $table->string('date')->nullable();
+            $table->string('remark')->nullable();
             $table->timestamps();
         });
     }
@@ -25,6 +29,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('types');
+        Schema::dropIfExists('incomes');
     }
 };

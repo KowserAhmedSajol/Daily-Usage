@@ -4,31 +4,29 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Models\Usage;
+use App\Models\Income;
 use App\Models\Type;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 
-class UsageApiController extends Controller
+class IncomeApiController extends Controller
 {
     public function index()
     {
-        $usages = Usage::with('type')->where('user_id',Auth::id())->orderBy('created_at', 'desc')->get();
+        $incomes = Income::with('income_type')->where('user_id',Auth::id())->orderBy('created_at', 'desc')->get();
         return response()->json([
-            "usages" =>  $usages,
+            "incomes" =>  $incomes,
         ], 200);
     }
     public function store(Request $request)
     {
-        Usage::create([
+        Income::create([
             'uuid' => Str::uuid(),
             'user_id' => Auth::id(),
             'title' => $request->title,
-            'actual_amount' => $request->actual_amount,
-            'estimated_amount' => $request->estimated_amount,
-            'type_id' => $request->type,
+            'amount' => $request->amount,
+            'income_type_id' => $request->income_type_id,
             'date' => $request->date,
-            'important' => $request->important,
             'remark' => $request->remark,
         ]);
         return response()->json([

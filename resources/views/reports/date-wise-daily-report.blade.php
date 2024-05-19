@@ -1,13 +1,13 @@
 @extends('layouts.main')
 @section('header.title')
-Report - Date Wise Daily Report
+Report - Date Wise Daily Expence Report
 @endsection
 
 @section('main')
 <div class="page-header page-header-light mb-2">
     <div class="page-header-content header-elements-md-inline">
         <div class="page-title d-flex">
-            <h4><i class="icon-arrow-left52 mr-2"></i> <span class="font-weight-semibold">Date Wise Daily Report</h4>
+            <h4><i class="icon-arrow-left52 mr-2"></i> <span class="font-weight-semibold">Date Wise Daily Expence Report</h4>
             <a href="#" class="header-elements-toggle text-default d-md-none"><i class="icon-more"></i></a>
         </div>
     </div>
@@ -69,7 +69,7 @@ Report - Date Wise Daily Report
                             <th class="text-center">SL</th>
                             <th class="text-center">Title</th>
                             <th class="text-center">Type</th>
-                            <th class="text-center">Remark</th>
+                            <th class="text-center">Is Important</th>
                             <th class="text-center">Actual Amount</th>
                             <th class="text-center">Estimated Amount</th>
                         </tr>
@@ -154,7 +154,7 @@ Report - Date Wise Daily Report
                                     <td class="text-center">${serialNumber++}</td>
                                     <td class="text-center">${usage.title}</td>
                                     <td class="text-center">${usage.type.type}</td>
-                                    <td class="text-center">${usage.remark ?? ''}</td>
+                                    <td class="text-center">${usage.important == 1 ? 'Important':'Not Important'}</td>
                                     <td class="text-center">${usage.actual_amount}</td>
                                     <td class="text-center">${usage.estimated_amount}</td>
                             `;

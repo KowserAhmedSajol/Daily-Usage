@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Usage;
+use App\Models\Income;
 use Carbon\Carbon;
 
 class ReportController extends Controller
@@ -23,7 +24,22 @@ class ReportController extends Controller
         $lastMonthTotal->actual_amount = $usageAll->sum('actual_amount');
         $lastMonthTotal->estimated_amount = $usageAll->sum('estimated_amount');
         
-        return view('reports.index',compact('total','lastMonthTotal'));
+
+        $incomeAll = Income::all();
+        $incomeTotal = new \stdClass;
+        $incomeTotal->amount = $incomeAll->sum('amount');
+        $incomeAll = $incomeAll->filter(function ($usage) {
+            return $usage->created_at->isCurrentMonth();
+        });
+        $incomeLastMonthTotal = new \stdClass;
+        $incomeLastMonthTotal->amount = $incomeAll->sum('amount');
+        
+        return view('reports.index',compact(
+                                            'total',
+                                            'lastMonthTotal',
+                                            'incomeTotal',
+                                            'incomeLastMonthTotal'
+                                            ));
     }
     public function dateWiseDailyReport()
     {

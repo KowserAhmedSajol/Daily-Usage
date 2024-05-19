@@ -1,12 +1,12 @@
 @extends('layouts.main')
 @section('header.title')
-Types
+Income Types
 @endsection
 
 @section('main')
 <div class="card">
 	<div class="card-header header-elements-inline">
-		<h5 class="card-title">Add New Type</h5>
+		<h5 class="card-title">Add New Income Type</h5>
 		<div class="header-elements">
 			<div class="list-icons">
 				<a class="list-icons-item" data-action="collapse"></a>
@@ -21,17 +21,17 @@ Types
 		<div class="row">
 			<div class="col-md-12">
 				<div class="form-group form-group-float">
-					<label class="form-group-float-label animate">Type</label>
+					<label class="form-group-float-label animate">Income Type</label>
 					<div class="input-group">
 						<span class="input-group-prepend">
 							<span class="input-group-text"><i class="icon-statistics"></i></span>
 						</span>
-						<input type="text" id="type" class="form-control" placeholder="Add Type*">
+						<input type="text" id="income_type" class="form-control" placeholder="Add Income Type*">
 					</div>
 				</div>
 			</div>
 			<div class="col-md-12 text-center">
-				<button id="submitBtn" type="button" class="btn bg-teal-400 btn-labeled btn-labeled-left legitRipple"><b><i id="addBtnIcon" class="icon-plus3"></i></b> Add New Type</button>
+				<button id="submitBtn" type="button" class="btn bg-teal-400 btn-labeled btn-labeled-left legitRipple"><b><i id="addBtnIcon" class="icon-plus3"></i></b> Add New Income Type</button>
 			</div>
 		</div>
 
@@ -97,7 +97,7 @@ Types
 			tbody.appendChild(tr);
 			
 			$.ajax({
-					url      : `/api/types/all`,
+					url      : `/api/income_types/all`,
 					method   : "GET",
 					dataType : "JSON",
 					headers: {
@@ -117,7 +117,7 @@ Types
 							tr.innerHTML = `
 								<td class="text-center">${serialNumber++}</td>
 								<td class="text-center">${type.id}</td>
-								<td class="text-center">${type.type}</td>
+								<td class="text-center">${type.income_type}</td>
 								<td class="text-center">${formatDate(type.created_at)}</td>
 								<td class="text-center"></td>
 								
@@ -142,13 +142,13 @@ Types
 			addBtnIcon.classList.add('icon-spinner9');
 			addBtnIcon.classList.add('spinner');
 			let data = {};
-			data.type      = $('#type').val();
-			console.log(data)
-			if(data.type == null ||data.type == '' ){
+			data.income_type      = $('#income_type').val();
+			
+			if(data.income_type == null ||data.income_type == '' ){
 				new PNotify(
 					{
-						title: "<i class='icon-flip-horizontal2'></i> Type Input Error",
-						text: "Type Must not be Null",
+						title: "<i class='icon-flip-horizontal2'></i> Income Type Input Error",
+						text: "Income Type Must not be Null",
 						addclass: "stack-bottom-right bg-danger border-danger",
 						stack: $('html').attr('dir') == 'rtl' ? stack_bottom_right_rtl : stack_bottom_right
 					}
@@ -157,7 +157,7 @@ Types
 			}
 			
 				$.ajax({
-					url      : `/api/types/add`,
+					url      : `/api/income_types/add`,
 					method   : "POST",
 					data     : data,
 					dataType : "JSON",
@@ -166,9 +166,8 @@ Types
 					},
 					success     : function (data)
 					{
-						console.log('success');
 						loadTable();
-						$('#type').val('');
+						$('#income_type').val('');
 						var addBtnIcon = document.getElementById('addBtnIcon');
 						addBtnIcon.classList.remove('icon-spinner9');
 						addBtnIcon.classList.remove('spinner');
