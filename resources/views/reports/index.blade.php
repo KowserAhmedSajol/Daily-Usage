@@ -7,7 +7,7 @@ Reports-Dashboard
 <div class="row">
     <div class="col-md-8">
         <div class="card bg-green-300">
-            <div class="card-header" style="border-bottom:1px solid rgb(245, 244, 244)">
+            <div class="card-header bg-green-400" style="border-bottom:1px solid rgb(245, 244, 244)">
                 <h5>Expences</h5>
             </div>
             <div class="card-body">
@@ -140,7 +140,7 @@ Reports-Dashboard
     </div>
     <div class="col-md-4">
         <div class="card bg-teal-300">
-            <div class="card-header" style="border-bottom:1px solid rgb(245, 244, 244)">
+            <div class="card-header bg-teal-400" style="border-bottom:1px solid rgb(245, 244, 244)">
                 <h5>Incomes</h5>
             </div>
             <div class="card-body">

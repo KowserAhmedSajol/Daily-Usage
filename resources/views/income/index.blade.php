@@ -5,7 +5,6 @@ Income: Add New Income
 
 @section('main')
 
-<button type="button" class="btn btn-light" id="pnotify-stack-bottom-right">Launch <i class="icon-play3 ml-2"></i></button>
 <div class="card">
 	<div class="card-header header-elements-inline">
 		<h5 class="card-title">Add New Income</h5>
