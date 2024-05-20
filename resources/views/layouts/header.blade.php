@@ -18,6 +18,12 @@
 	<link href="{{ asset('assets/css/components.min.css') }}" rel="stylesheet" type="text/css">
 	<link href="{{ asset('assets/css/colors.min.css') }}" rel="stylesheet" type="text/css">
     @yield('css')
+	<style>
+		.nav-group-sub .nav-link{
+
+		    padding: .625rem 0.25rem .625rem 1.5rem;
+		}
+	</style>
 	<!-- /global stylesheets -->
 
 	<!-- Core JS files -->

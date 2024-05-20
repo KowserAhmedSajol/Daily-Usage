@@ -120,10 +120,18 @@
 								</li>
 								<li class="nav-item-divider"></li>
 								<li class="nav-item">
-									<a href="{{ route('reports.date-wise-daily-report') }}" class="nav-link legitRipple {{ request()->is('reports.date-wise-daily-report') ? 'active' : '' }}">
-										<i class="icon-copy"></i>
+									<a href="{{ route('reports.date-wise-daily-report') }}" class="nav-link legitRipple {{ request()->is('reports/date-wise-daily-report') ? 'active' : '' }}">
+										<i class="icon-watch"></i>
 										<span>
 											Date Wise Daily Expence Report
+										</span>
+									</a>
+								</li>
+								<li class="nav-item">
+									<a href="{{ route('reports.month-wise-expence-report') }}" class="nav-link legitRipple {{ request()->is('reports/month-wise-expence-report') ? 'active' : '' }}">
+										<i class="icon-calendar52"></i>
+										<span>
+											Month Wise Expence Report
 										</span>
 									</a>
 								</li>

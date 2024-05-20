@@ -45,4 +45,10 @@ class ReportController extends Controller
     {
         return view('reports.date-wise-daily-report');
     }
+    public function monthWiseReport()
+    {
+        return view('reports.month-wise-report');
+    }
+
+    
 }

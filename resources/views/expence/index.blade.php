@@ -125,7 +125,7 @@ Expence: Add New Expence
 						<th class="text-center">Estimated Amount</th>
 						<th class="text-center">Type</th>
 						<th class="text-center">Date</th>
-						<th class="text-center">Remark</th>
+						<th class="text-center">Is Important?</th>
 					</tr>
 				</thead>
 				<tbody id="tbody">
@@ -219,7 +219,7 @@ Expence: Add New Expence
 								<td class="text-center">${usage.estimated_amount}</td>
 								<td class="text-center">${usage.type.type}</td>
 								<td class="text-center">${formatDate(usage.created_at)}</td>
-								<td class="text-center">${usage.remark ?? ''}</td>
+								<td class="text-center">${usage.important == 1 ? 'Important' : 'Not Important'}</td>
 						`;
 						tbody.appendChild(tr);
 					});

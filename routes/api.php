@@ -45,5 +45,6 @@ Route::middleware(['web', 'auth'])->group(function () {
     });
     Route::prefix('report')->group(function(){
         Route::post('/date-wise-daily-report', [ReportApiController::class, 'dateWiseDailyReport']);
+        Route::post('/month-wise-expence-report', [ReportApiController::class, 'monthWiseReport']);
     });
 });
