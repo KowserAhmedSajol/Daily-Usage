@@ -13,10 +13,11 @@ class ReportApiController extends Controller
 {
     public function dateWiseDailyReport(Request $request)
     {
-        $date = Carbon::createFromFormat('d M, Y', $request->date)->toDateString();
+        // $date = Carbon::createFromFormat('d M, Y', $request->date)->toDateString();
+        // dd($date);
         $usages =  Usage::with('type')
         ->where('user_id',Auth::id())
-        ->whereDate('created_at', $date)
+        ->where('date', $request->date)
         ->orderBy('created_at', 'desc')
         ->get();
         return response()->json([

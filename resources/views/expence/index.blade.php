@@ -218,7 +218,7 @@ Expence: Add New Expence
 								<td class="text-center">${usage.actual_amount}</td>
 								<td class="text-center">${usage.estimated_amount}</td>
 								<td class="text-center">${usage.type.type}</td>
-								<td class="text-center">${formatDate(usage.created_at)}</td>
+								<td class="text-center">${usage.date}</td>
 								<td class="text-center">${usage.important == 1 ? 'Important' : 'Not Important'}</td>
 						`;
 						tbody.appendChild(tr);

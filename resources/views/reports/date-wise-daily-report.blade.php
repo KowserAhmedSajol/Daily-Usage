@@ -116,7 +116,7 @@ Report - Date Wise Daily Expence Report
         document.querySelector('#tbody').innerHTML = '';
         const tr = document.createElement('tr');
         tr.innerHTML = `
-            <td colspan="7" class="text-center"><i class="icon-spinner6 spinner mr-2"></i></td> 
+            <td colspan="7" class="text-center"><i class="icon-spinner10 spinner mr-2"></i><i class="icon-spinner6 spinner mr-2"></i><i class="icon-spinner2 spinner mr-2"></i></td> 
         `;
         tbody.appendChild(tr);
         let data = {};
