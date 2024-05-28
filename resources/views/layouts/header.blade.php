@@ -17,6 +17,8 @@
 	<link href="{{ asset('assets/css/layout.min.css') }}" rel="stylesheet" type="text/css">
 	<link href="{{ asset('assets/css/components.min.css') }}" rel="stylesheet" type="text/css">
 	<link href="{{ asset('assets/css/colors.min.css') }}" rel="stylesheet" type="text/css">
+	
+	<link href="{{ asset('global_assets/css/icons/fontawesome/styles.min.css') }}" rel="stylesheet" type="text/css">
     @yield('css')
 	<style>
 		.nav-group-sub .nav-link{
@@ -59,6 +61,7 @@
 	
 	<script src="{{ asset('global_assets/js/plugins/notifications/pnotify.min.js') }}"></script>
 	<script src="{{ asset('global_assets/js/demo_pages/extra_pnotify.js') }}"></script>
+	
 	<script>
 		var stack_bottom_right = {"dir1": "left", "dir2": "up", "firstpos1": 20, "firstpos2": 20};
 		var stack_bottom_right_rtl = {"dir1": "right", "dir2": "up", "firstpos1": 20, "firstpos2": 20};

@@ -47,12 +47,12 @@ Reports-Dashboard
                         <div class="card card-body">
                             <div class="media">
                                 <div class="media-body">
-                                    <h3 style="color: black;" class="font-weight-semibold mb-0"><i class="icon-coin-dollar icon-2x"></i> {{ $total->actual_amount }}</h3>
-                                    <span class="text-uppercase font-size-sm text-muted">Actual</span>
+                                    <h3 style="color: black;" class="font-weight-semibold mb-0"><i class="icon-coin-dollar icon-2x"></i> {{ $total->estimated_amount - $total->actual_amount }}</h3>
+                                    <span class="text-uppercase font-size-sm text-muted">Saved</span>
                                 </div>
     
                                 <div class="ml-3 align-self-center">
-                                    <i class="icon-file-check2 icon-3x text-blue-400"></i>
+                                    <i class="icon-piggy-bank icon-3x  text-danger-400"></i>
                                 </div>
                             </div>
                         </div>
@@ -62,12 +62,12 @@ Reports-Dashboard
                         <div class="card card-body">
                             <div class="media">
                                 <div class="media-body">
-                                    <h3 style="color: black;" class="font-weight-semibold mb-0"><i class="icon-coin-dollar icon-2x"></i> {{ $total->estimated_amount - $total->actual_amount }}</h3>
-                                    <span class="text-uppercase font-size-sm text-muted">Saved</span>
+                                    <h3 style="color: black;" class="font-weight-semibold mb-0"><i class="icon-coin-dollar icon-2x"></i> {{ $incomeTotal->amount - $total->totalUsage }}</h3>
+                                    <span class="text-uppercase font-size-sm text-muted">Balance</span>
                                 </div>
     
                                 <div class="ml-3 align-self-center">
-                                    <i class="icon-piggy-bank icon-3x text-danger-400"></i>
+                                    <i class="icon-file-check2 icon-3x text-blue-400"></i>
                                 </div>
                             </div>
                         </div>
@@ -106,21 +106,6 @@ Reports-Dashboard
                     </div>
     
                     <div class="col-sm-6 col-xl-3">
-                        <div class="card card-body bg-success-400 has-bg-image">
-                            <div class="media">
-                                <div class="mr-3 align-self-center">
-                                    <i class="icon-file-check2 icon-3x opacity-75"></i>
-                                </div>
-    
-                                <div class="media-body text-right">
-                                    <h3 class="mb-0"><i class="icon-coin-dollar icon-2x"></i> {{ $lastMonthTotal->actual_amount }}</h3>
-                                    <span class="text-uppercase font-size-xs">Actual</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-    
-                    <div class="col-sm-6 col-xl-3">
                         <div class="card card-body bg-indigo-400 has-bg-image">
                             <div class="media">
                                 <div class="mr-3 align-self-center">
@@ -128,8 +113,23 @@ Reports-Dashboard
                                 </div>
     
                                 <div class="media-body text-right">
-                                    <h3 class="mb-0"><i class="icon-coin-dollar icon-2x"></i> {{ $lastMonthTotal->estimated_amount - $lastMonthTotal->actual_amount }}</h3>
+                                    <h3 class="mb-0"><i class="icon-coin-dollar icon-2x"></i> {{  $lastMonthTotal->estimated_amount - $lastMonthTotal->actual_amount }}</h3>
                                     <span class="text-uppercase font-size-xs">Saved</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+    
+                    <div class="col-sm-6 col-xl-3">
+                        <div class="card card-body bg-success-400 has-bg-image">
+                            <div class="media">
+                                <div class="mr-3 align-self-center">
+                                    <i class="icon-file-check2 icon-3x opacity-75"></i>
+                                </div>
+    
+                                <div class="media-body text-right">
+                                    <h3 class="mb-0"><i class="icon-coin-dollar icon-2x"></i> {{  $incomeLastMonthTotal->amount - $lastMonthTotal->totalUsage  }}</h3>
+                                    <span class="text-uppercase font-size-xs">Balance</span>
                                 </div>
                             </div>
                         </div>
@@ -248,8 +248,8 @@ Reports-Dashboard
                         </button>
         
                         <button type="button" class="btn bg-white btn-block btn-float m-0 legitRipple">
-                            <i class="icon-google-drive text-success-400 icon-2x"></i>
-                            <span>Google Drive</span>
+                            <i class="icon-exclamation text-success-400 icon-2x"></i>
+                            <span>Priority Wise Report</span>
                         </button>
                         <button type="button" class="btn bg-white btn-block btn-float m-0 legitRipple">
                             <i class="icon-google-drive text-success-400 icon-2x"></i>

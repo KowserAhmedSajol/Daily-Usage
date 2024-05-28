@@ -46,5 +46,48 @@ class ReportApiController extends Controller
             "usages" =>  $usageData,
         ], 200);
     }
+    public function typeWiseReport(Request $request)
+    {
+        
+       
+        $startDate = Carbon::createFromDate($request->year, $request->month, 1)->startOfMonth();
+        $endDate = Carbon::createFromDate($request->year, $request->month, 1)->endOfMonth();
+
+        $usageData = Usage::where('user_id',Auth::id())
+        ->whereBetween(DB::raw("STR_TO_DATE(date, '%d %b, %Y')"), [$startDate, $endDate])
+        ->select(DB::raw("DATE_FORMAT(STR_TO_DATE(date, '%d %b, %Y'), '%Y-%m-%d') as date"),)
+        ->groupBy(DB::raw("DATE_FORMAT(STR_TO_DATE(date, '%d %b, %Y'), '%Y-%m-%d')"))
+        ->get();
+        $dateArray = [];
+
+        foreach ($usageData as $data) {
+            $dateArray[Carbon::createFromFormat('Y-m-d', $data->date)->format('d M, Y')] = null; 
+        }
+        foreach($dateArray as $key =>$date)
+        {
+            $usageData = Usage::where('user_id',Auth::id())
+            ->where('date',$key)
+            ->select('type_id')
+            ->groupBy('type_id')
+            ->get();
+            foreach ($usageData as $data) {
+                $mainData = Usage::where('user_id',Auth::id())->where('date',$key)->where('type_id',$data->type_id)->get()->toArray();
+                $dateArray[$key][$data->type->type] = $mainData;
+            }
+        }
+        // $usageData = Usage::where('user_id',Auth::id())
+        // ->select(
+        //     DB::raw("DATE_FORMAT(STR_TO_DATE(date, '%d %b, %Y'), '%Y-%m-%d') as date"),
+        //     DB::raw("SUM(actual_amount) as total_actual_amount"),
+        //     DB::raw("SUM(estimated_amount) as total_estimated_amount")
+        // )
+        // ->whereBetween(DB::raw("STR_TO_DATE(date, '%d %b, %Y')"), [$startDate, $endDate])
+        // ->groupBy(DB::raw("DATE_FORMAT(STR_TO_DATE(date, '%d %b, %Y'), '%Y-%m-%d')"))
+        // ->get();
+        // dd($dateArray);
+        return response()->json([
+            "usages" =>  $dateArray,
+        ], 200);
+    }
 
 }

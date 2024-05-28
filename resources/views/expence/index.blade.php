@@ -168,6 +168,9 @@ Expence: Add New Expence
 	$(document).ready(function() {
 			loadTable();
 			$(document).on('click','#submitBtn', addData);  
+			$(document).on('change','#actual_amount', ()=>{
+				$('#estimated_amount').val($('#actual_amount').val());
+			});  
 
             var today = new Date();
             var dd = String(today.getDate()).padStart(2, '0');
@@ -251,6 +254,8 @@ Expence: Add New Expence
 			data.date                   = $('#pickDate').val();
 			data.important              = $('#important').prop('checked') == true ? '1': '0';
 			
+			
+			
 			if(data.actual_amount == null ||data.actual_amount == '' ){
 				new PNotify(
 					{
@@ -288,7 +293,7 @@ Expence: Add New Expence
                     $('#title').val('');
                     $('#actual_amount').val('');
                     $('#estimated_amount').val('');
-                    $('#type').val('');
+                    // $('#type').val('');
                     $('#remark').val('');
                     var addBtnIcon = document.getElementById('addBtnIcon');
                     addBtnIcon.classList.remove('icon-spinner9');

@@ -49,6 +49,10 @@ class ReportController extends Controller
     {
         return view('reports.month-wise-report');
     }
+    public function typeWiseReport()
+    {
+        return view('reports.type-wise-expence-report');
+    }
 
     
 }

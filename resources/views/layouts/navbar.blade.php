@@ -1,7 +1,7 @@
 	<!-- Main navbar -->
 	<div class="navbar navbar-expand-md navbar-dark bg-teal-800 fixed-top">
 		<div class="navbar-brand" style="padding:10px">
-			<a href="index.html" class="d-inline-block">
+			<a href="{{ route('dashboard') }}" class="d-inline-block">
 				<img src="{{ asset('logo.png') }}" style="height:50px; width:200px;" alt="">
 			</a>
 		</div>
