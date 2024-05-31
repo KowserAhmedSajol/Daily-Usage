@@ -25,6 +25,9 @@
 
 		    padding: .625rem 0.25rem .625rem 1.5rem;
 		}
+		/* .sidebar-user-material-body {
+			background-image: url('https://ktusu.in/cdn/shop/files/soft-tpu-inner-cloth-phone-back-case-cover-for-apple-iphone-cases-covers-ktusu-31241657155684.jpg?v=1706377293');
+		} */
 	</style>
 	<!-- /global stylesheets -->
 
@@ -33,6 +36,7 @@
 	<script src="{{ asset('global_assets/js/main/bootstrap.bundle.min.js') }}"></script>
 	<script src="{{ asset('global_assets/js/plugins/loaders/blockui.min.js') }}"></script>
 	<script src="{{ asset('global_assets/js/plugins/ui/ripple.min.js') }}"></script>
+	
 	<!-- /core JS files -->
 
 	<!-- Theme JS files -->
@@ -61,10 +65,16 @@
 	
 	<script src="{{ asset('global_assets/js/plugins/notifications/pnotify.min.js') }}"></script>
 	<script src="{{ asset('global_assets/js/demo_pages/extra_pnotify.js') }}"></script>
+	<script src="{{ asset('global_assets/js/plugins/extensions/jquery_ui/widgets.min.js') }}"></script>
+	<script src="{{ asset('global_assets/js/demo_pages/widgets_content.js') }}"></script>
+	<script src="{{ asset('global_assets/js/demo_pages/widgets_stats.js') }}"></script>
+
+	
 	
 	<script>
 		var stack_bottom_right = {"dir1": "left", "dir2": "up", "firstpos1": 20, "firstpos2": 20};
 		var stack_bottom_right_rtl = {"dir1": "right", "dir2": "up", "firstpos1": 20, "firstpos2": 20};
+		
 	</script>
 	
 	<!-- /theme JS files -->

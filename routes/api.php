@@ -7,6 +7,7 @@ use App\Http\Controllers\Api\IncomeTypeApiController;
 use App\Http\Controllers\Api\UsageApiController;
 use App\Http\Controllers\Api\IncomeApiController;
 use App\Http\Controllers\Api\ReportApiController;
+use App\Http\Controllers\Api\ProfileApiController;
 
 /*
 |--------------------------------------------------------------------------
@@ -25,7 +26,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 Route::middleware(['web', 'auth'])->group(function () {
 // Route::middleware('auth')->group(function () {
-    
+    Route::post('/profile/change-cover', [ProfileApiController::class, 'changeCover']);
     Route::prefix('income_types')->group(function(){
         Route::post('/add', [IncomeTypeApiController::class, 'store']);
         Route::get('/all', [IncomeTypeApiController::class, 'index']);

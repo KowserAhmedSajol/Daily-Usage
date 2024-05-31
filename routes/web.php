@@ -24,15 +24,12 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-// Route::get('/dashboard', function () {
-//     return view('dashboard');
-// })->middleware(['auth', 'verified'])->name('dashboard');
-
+Route::get('/profile', [ProfileController::class, 'profile'])->middleware(['auth', 'verified'])->name('profile');
 Route::get('/dashboard', [DashboardController::class, 'index'])->middleware(['auth', 'verified'])->name('dashboard');
 Route::middleware('auth')->group(function () {
-    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+    Route::get('/profiles', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::patch('/profiles', [ProfileController::class, 'update'])->name('profile.update');
+    Route::delete('/profiles', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
     Route::group(['prefix' => 'expence', 'as' => 'expence.'], function () {
         Route::get('/', [UsageController::class, 'index'])->name('index');

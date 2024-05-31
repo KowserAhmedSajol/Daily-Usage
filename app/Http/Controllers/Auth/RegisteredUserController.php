@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
+use Illuminate\Support\Str;
+use App\Models\Proile;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\RedirectResponse;
@@ -50,6 +52,10 @@ class RegisteredUserController extends Controller
             'email' => $request->email,
             'image' => $fileNameToStore,
             'password' => Hash::make($request->password),
+        ]);
+        $profile = Profile::create([
+            'uuid' => Str::uuid(),
+            'user_id' => $user->id,
         ]);
 
         event(new Registered($user));
