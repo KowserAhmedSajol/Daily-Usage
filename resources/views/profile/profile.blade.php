@@ -4,11 +4,7 @@ Profile - {{ auth()->user()->name }}
 @endsection
 
 @section('main')
-{{-- <div id="overlay">
-    <div class="cv-spinner">
-        <span class="loader"></span>
-    </div>
-</div> --}}
+
 <!-- Cover area -->
 <div class="profile-cover">
     <div id="overlay">
@@ -29,12 +25,12 @@ Profile - {{ auth()->user()->name }}
     <div class="media align-items-center text-center text-md-left flex-column flex-md-row m-0">
         <div class="mr-md-3 mb-2 mb-md-0">
             <a href="#" class="profile-thumb">
-                <img src="{{ asset('storage/profile/images/' . auth()->user()->image) }}" class="border-white rounded-circle" width="48" height="48" alt="">
+                <img src="{{ asset('storage/profile/images/' . auth()->user()->image) }}" class="border-white " width="48" height="48" alt="">
             </a>
         </div>
 
         <div class="media-body text-white">
-            <h1 class="mb-0">{{ auth()->user()->name }}</h1>
+            <h1 class="mb-0">{{ auth()->user()->name ?? 'No Name' }}</h1>
             <span class="d-block">{{ $profile->designation ?? '' }}</span>
         </div>
 
@@ -66,7 +62,7 @@ Profile - {{ auth()->user()->name }}
             <li class="nav-item">
                 <a href="#activity" class="navbar-nav-link active" data-toggle="tab">
                     <i class="icon-menu7 mr-2"></i>
-                    Activity
+                    About
                 </a>
             </li>
             <li class="nav-item">
@@ -97,16 +93,6 @@ Profile - {{ auth()->user()->name }}
         #myFile {
             display: none;
         }
-        /* div.relative {
-        position: relative;
-        }
-
-        div.absolute {
-        position: absolute;
-        top: 80px;
-        right: 0;
-        } */
-        /* Style the label to look like a button */
         .file-label {
             display: inline-block;
             padding: 10px 20px;
