@@ -7,6 +7,7 @@ use App\Http\Controllers\IncomeTypeController;
 use App\Http\Controllers\ReportController;
 use App\Http\Controllers\UsageController;
 use App\Http\Controllers\IncomeController;
+use App\Http\Controllers\GameController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -38,7 +39,7 @@ Route::middleware('auth')->group(function () {
         Route::get('/', [IncomeController::class, 'index'])->name('index');
     });
 
-    
+
     Route::group(['prefix' => 'types', 'as' => 'types.'], function () {
         Route::get('/', [TypeController::class, 'index'])->name('index');
     });
@@ -51,7 +52,9 @@ Route::middleware('auth')->group(function () {
         Route::get('/month-wise-expence-report', [ReportController::class, 'monthWiseReport'])->name('month-wise-expence-report');
         Route::get('/type-wise-expence-report', [ReportController::class, 'typeWiseReport'])->name('type-wise-expence-report');
     });
-
+    Route::group(['prefix' => 'games', 'as' => 'games.'], function () {
+        Route::get('/dino', [GameController::class, 'dino'])->name('dino');
+    });
 });
 
 require __DIR__.'/auth.php';
