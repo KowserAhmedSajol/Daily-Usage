@@ -51,6 +51,7 @@ Route::middleware('auth')->group(function () {
         Route::get('/date-wise-daily-report', [ReportController::class, 'dateWiseDailyReport'])->name('date-wise-daily-report');
         Route::get('/month-wise-expence-report', [ReportController::class, 'monthWiseReport'])->name('month-wise-expence-report');
         Route::get('/type-wise-expence-report', [ReportController::class, 'typeWiseReport'])->name('type-wise-expence-report');
+        Route::get('/type-and-month-wise-expence-report', [ReportController::class, 'typeAndMonthWiseReport'])->name('type-and-month-wise-expence-report');
     });
     Route::group(['prefix' => 'games', 'as' => 'games.'], function () {
         Route::get('/dino', [GameController::class, 'dino'])->name('dino');

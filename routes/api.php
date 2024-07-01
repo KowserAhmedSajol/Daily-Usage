@@ -39,6 +39,8 @@ Route::middleware(['web', 'auth'])->group(function () {
     Route::prefix('usage')->group(function(){
         Route::get('/all', [UsageApiController::class, 'index']);
         Route::post('/store', [UsageApiController::class, 'store']);
+        Route::get('/update/{id}', [UsageApiController::class, 'update'])->name('update');
+        Route::get('/delete/{id}', [UsageApiController::class, 'delete'])->name('delete');
     });
     Route::prefix('income')->group(function(){
         Route::get('/all', [IncomeApiController::class, 'index']);
@@ -48,5 +50,6 @@ Route::middleware(['web', 'auth'])->group(function () {
         Route::post('/date-wise-daily-report', [ReportApiController::class, 'dateWiseDailyReport']);
         Route::post('/month-wise-expence-report', [ReportApiController::class, 'monthWiseReport']);
         Route::post('/type-wise-expence-report', [ReportApiController::class, 'typeWiseReport']);
+        Route::post('/type-and-month-wise-expence-report', [ReportApiController::class, 'typeAndMonthWiseReport']);
     });
 });

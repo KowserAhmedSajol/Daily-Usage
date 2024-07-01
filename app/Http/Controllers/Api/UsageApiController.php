@@ -35,4 +35,23 @@ class UsageApiController extends Controller
             "msg" =>  'Successfull',
         ], 200);
     }
+    public function update($id)
+    {
+
+    }
+
+    public function delete($id)
+    {
+        $usage = Usage::find($id);
+        if ($usage) {
+            $usage->delete();
+            return response()->json([
+                "msg" => 'Delete Successful',
+            ], 200);
+        } else {
+            return response()->json([
+                "msg" => 'Record not found',
+            ], 404);
+        }
+    }
 }

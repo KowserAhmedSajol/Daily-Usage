@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Usage;
 use App\Models\Income;
+use App\Models\Type;
 use Carbon\Carbon;
 
 class ReportController extends Controller
@@ -52,6 +53,11 @@ class ReportController extends Controller
     public function typeWiseReport()
     {
         return view('reports.type-wise-expence-report');
+    }
+    public function typeAndMonthWiseReport()
+    {
+        $types = Type::orderBy('type', 'asc')->get();
+        return view('reports.type-and-month-wise-expence-report',compact('types'));
     }
 
     

@@ -143,6 +143,14 @@
 										</span>
 									</a>
 								</li>
+								<li class="nav-item">
+									<a href="{{ route('reports.type-and-month-wise-expence-report') }}" class="nav-link legitRipple {{ request()->is('reports/type-wise-expence-report') ? 'active' : '' }}">
+										<i style="font-weight: bold" class="fab fa-buromobelexperte"></i>
+										<span>
+											Type And Month Wise Expence Report
+										</span>
+									</a>
+								</li>
 							</ul>
 						</li>
 						<!-- /main -->

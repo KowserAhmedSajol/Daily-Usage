@@ -231,10 +231,10 @@ Reports-Dashboard
                             <span>Date wise Daily Report</span>
                         </a>
         
-                        <button type="button" class="btn bg-white btn-block btn-float m-0 legitRipple">
+                        <a href="{{ route('reports.type-wise-expence-report') }}" target="_blank" type="button" class="btn bg-white btn-block btn-float m-0 legitRipple">
                             <i class="icon-dropbox text-blue-400 icon-2x"></i>
                             <span>Type Wise Report</span>
-                        </button>
+                        </a>
                         <button type="button" class="btn bg-white btn-block btn-float m-0 legitRipple">
                             <i class="icon-dropbox text-blue-400 icon-2x"></i>
                             <span>Date & Type Wise Report</span>
@@ -247,10 +247,10 @@ Reports-Dashboard
                             <span>Week Wise Report</span>
                         </button>
         
-                        <button type="button" class="btn bg-white btn-block btn-float m-0 legitRipple">
+                        <a href="{{ route('reports.type-and-month-wise-expence-report') }}" target="_blank" type="button" class="btn bg-white btn-block btn-float m-0 legitRipple">
                             <i class="icon-exclamation text-success-400 icon-2x"></i>
-                            <span>Priority Wise Report</span>
-                        </button>
+                            <span>Type And Month Wise Expence Report</span>
+                        </a>
                         <button type="button" class="btn bg-white btn-block btn-float m-0 legitRipple">
                             <i class="icon-google-drive text-success-400 icon-2x"></i>
                             <span>Google Drive</span>

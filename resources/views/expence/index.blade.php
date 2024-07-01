@@ -126,6 +126,7 @@ Expence: Add New Expence
 						<th class="text-center">Type</th>
 						<th class="text-center">Date</th>
 						<th class="text-center">Is Important?</th>
+						<th class="text-center">Action</th>
 					</tr>
 				</thead>
 				<tbody id="tbody">
@@ -161,6 +162,14 @@ Expence: Add New Expence
 <script src="../../../../global_assets/js/plugins/pickers/pickadate/legacy.js"></script>
 <script src="../../../../global_assets/js/plugins/notifications/jgrowl.min.js"></script>
 <script src="../../../../global_assets/js/demo_pages/picker_date.js"></script>
+<script src="../../../../global_assets/js/demo_pages/extra_sweetalert.js"></script>
+<!-- Theme JS files -->
+<script src="../../../../global_assets/js/plugins/notifications/sweet_alert.min.js"></script>
+<script src="../../../../global_assets/js/plugins/forms/selects/select2.min.js"></script>
+<script src="../../../../global_assets/js/plugins/forms/styling/uniform.min.js"></script>
+<script src="../../../../global_assets/js/plugins/forms/selects/bootstrap_multiselect.js"></script>
+<script src="../../../../global_assets/js/plugins/forms/styling/switchery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 
 
@@ -223,6 +232,12 @@ Expence: Add New Expence
 								<td class="text-center">${usage.type.type}</td>
 								<td class="text-center">${usage.date}</td>
 								<td class="text-center">${usage.important == 1 ? 'Important' : 'Not Important'}</td>
+								<td class="text-center">
+									<div class="list-icons">
+										<a href="#" class="list-icons-item text-primary-600"><i class="icon-pencil7"></i></a>
+										<a href="#" class="list-icons-item text-danger-600" onClick="handleDeleteClick(${usage.id}, this)"><i class="icon-trash"></i></a>
+									</div>
+								</td>
 						`;
 						tbody.appendChild(tr);
 					});
@@ -236,6 +251,36 @@ Expence: Add New Expence
 				}
 			}); 
 		}
+		function handleDeleteClick(usageId, element) {
+            Swal.fire({
+                title: 'Are you sure?',
+                text: 'You will not be able to recover this record!',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'Yes, delete it!',
+                cancelButtonText: 'No, keep it'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    console.log(`Deleting usage with id: ${usageId}`);
+                    $.ajax({
+                        url: `/api/usage/delete/${usageId}`,
+                        method: "get",
+                        headers: {
+                            "X-CSRF-TOKEN": $(document).find('[name="_token"]').val()
+                        },
+                        success: function (response) {
+                            const row = element.closest('tr');
+                            row.remove();
+                            Swal.fire('Deleted!', 'The record has been deleted.', 'success');
+                        },
+                        error: function (err) {
+                            console.error('Failed to delete the usage:', err);
+                            Swal.fire('Failed!', 'There was an error deleting the record.', 'error');
+                        }
+                    });
+                }
+            });
+        }
 
 		function addData()
 		{
