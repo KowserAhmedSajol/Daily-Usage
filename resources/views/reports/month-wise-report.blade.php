@@ -155,6 +155,8 @@ Report - Month Wise Expence Report
 		data.month      = $('#month').val();
 		data.year      = $('#year').val();
         if(data.month != '' && data.year != '' ){
+            
+            let totalDays = getTotalDaysInMonth(data.year, data.month);
             document.querySelector('#tbody').innerHTML = '';
             const tr = document.createElement('tr');
             tr.innerHTML = `
@@ -236,6 +238,12 @@ Report - Month Wise Expence Report
                             <td class="text-center">${(Number(totalEstimatedAmount)/data.usages.length).toFixed(2)}</td>
                         `;
                         tbody.appendChild(tr);
+                        var tr = document.createElement('tr');
+                        tr.innerHTML = `
+                            <td colspan="3" class="text-center bg-orange">Average Month Amount</td>
+                            <td class="text-center">${(Number(totalEstimatedAmount)/totalDays).toFixed(2)}</td>
+                        `;
+                        tbody.appendChild(tr);
                     }else{
                         const tr = document.createElement('tr');
 			            tr.classList.add('table-danger');
@@ -256,7 +264,9 @@ Report - Month Wise Expence Report
         }
     }
 
-
+    function getTotalDaysInMonth(year, month) {
+        return new Date(year, month, 0).getDate();
+    }
     // function loadData()
     // {
     //     document.querySelector('#tbody').innerHTML = '';

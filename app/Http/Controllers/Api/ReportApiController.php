@@ -33,6 +33,7 @@ class ReportApiController extends Controller
         $endDate = Carbon::createFromDate($request->year, $request->month, 1)->endOfMonth();
         // dd($endDate);
         $usageData = Usage::where('user_id',Auth::id())
+        ->where('title','!=','Bari te dilam salary')
         ->select(
             DB::raw("DATE_FORMAT(STR_TO_DATE(date, '%d %M, %Y'), '%Y-%m-%d') as date"),
             DB::raw("SUM(actual_amount) as total_actual_amount"),
