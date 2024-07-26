@@ -8,6 +8,11 @@ use App\Http\Controllers\ReportController;
 use App\Http\Controllers\UsageController;
 use App\Http\Controllers\IncomeController;
 use App\Http\Controllers\GameController;
+use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\SubCategoryController;
+use App\Http\Controllers\TagController;
+use App\Http\Controllers\ContactController;
+use App\Http\Controllers\Blog\BlogController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -24,6 +29,10 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 });
+// Route::get('/blog', function () {
+//     // dd('ffd');
+//     return view('blog.index');
+// });
 
 Route::get('/profile', [ProfileController::class, 'profile'])->middleware(['auth', 'verified'])->name('profile');
 Route::get('/dashboard', [DashboardController::class, 'index'])->middleware(['auth', 'verified'])->name('dashboard');
@@ -56,6 +65,45 @@ Route::middleware('auth')->group(function () {
     Route::group(['prefix' => 'games', 'as' => 'games.'], function () {
         Route::get('/dino', [GameController::class, 'dino'])->name('dino');
     });
+    Route::group(['prefix' => 'blogs', 'as' => 'blogs.'], function () {
+        Route::get('/', [BlogController::class, 'index'])->name('index');
+        Route::get('/create', [BlogController::class, 'create'])->name('create');
+        Route::get('/list', [BlogController::class, 'list'])->name('list');
+        Route::post('/store', [BlogController::class, 'store'])->name('store');
+        Route::get('/category/{uuid}', [BlogController::class, 'category'])->name('category');
+        Route::get('/blog-post/{slug}', [BlogController::class, 'blogPost'])->name('blogPost');
+        Route::get('/toggle-status/{uuid}', [BlogController::class, 'toggleStatus'])->name('toggle-status');
+
+
+        Route::get('/about-us', [ContactController::class, 'aboutUs'])->name('about-us');
+        Route::get('/contuct-us', [ContactController::class, 'contuctUs'])->name('contuct-us');
+        Route::post('/contuct-us-form-get', [ContactController::class, 'store'])->name('contuct-us-form-get');
+        Route::get('/contacts', [ContactController::class, 'index'])->name('contacts');
+        Route::get('/contacts/view/{id}', [ContactController::class, 'show'])->name('contacts.view');
+    });
+
+
+});
+Route::group(['prefix' => 'categories', 'as' => 'categories.'], function () {
+    Route::get('/', [CategoryController::class, 'index'])->name('index');
+    Route::get('/create', [CategoryController::class, 'create'])->name('create');
+    Route::post('/store', [CategoryController::class, 'store'])->name('store');
+    Route::get('/destroy/{uuid}', [CategoryController::class, 'destroy'])->name('destroy');
+    Route::get('/toggle-status/{uuid}', [CategoryController::class, 'toggleStatus'])->name('toggle-status');
+});
+Route::group(['prefix' => 'sub-categories', 'as' => 'sub-categories.'], function () {
+    Route::get('/', [SubCategoryController::class, 'index'])->name('index');
+    Route::get('/create', [SubCategoryController::class, 'create'])->name('create');
+    Route::post('/store', [SubCategoryController::class, 'store'])->name('store');
+    Route::get('/destroy/{uuid}', [SubCategoryController::class, 'destroy'])->name('destroy');
+    Route::get('/toggle-status/{uuid}', [SubCategoryController::class, 'toggleStatus'])->name('toggle-status');
+});
+Route::group(['prefix' => 'tags', 'as' => 'tags.'], function () {
+    Route::get('/', [TagController::class, 'index'])->name('index');
+    Route::get('/create', [TagController::class, 'create'])->name('create');
+    Route::post('/store', [TagController::class, 'store'])->name('store');
+    Route::get('/destroy/{id}', [TagController::class, 'destroy'])->name('destroy');
+    Route::get('/toggle-status/{uuid}', [TagController::class, 'toggleStatus'])->name('toggle-status');
 });
 
 require __DIR__.'/auth.php';

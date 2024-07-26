@@ -8,6 +8,7 @@ use App\Http\Controllers\Api\UsageApiController;
 use App\Http\Controllers\Api\IncomeApiController;
 use App\Http\Controllers\Api\ReportApiController;
 use App\Http\Controllers\Api\ProfileApiController;
+use App\Http\Controllers\Api\BlogApiController;
 
 /*
 |--------------------------------------------------------------------------
@@ -51,5 +52,10 @@ Route::middleware(['web', 'auth'])->group(function () {
         Route::post('/month-wise-expence-report', [ReportApiController::class, 'monthWiseReport']);
         Route::post('/type-wise-expence-report', [ReportApiController::class, 'typeWiseReport']);
         Route::post('/type-and-month-wise-expence-report', [ReportApiController::class, 'typeAndMonthWiseReport']);
+    });
+    Route::prefix('blogs')->group(function(){
+        Route::post('/get-sub-category', [BlogApiController::class, 'getSubCategory']);
+        Route::get('/load-blogs', [BlogApiController::class, 'loadBlogs']);
+        Route::get('/load-blogs-categorized', [BlogApiController::class, 'loadBlogsCategorized']);
     });
 });
