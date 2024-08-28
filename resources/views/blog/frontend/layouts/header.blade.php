@@ -20,15 +20,15 @@
     
     <div class="nav-btns">
     <button class="aside-btn"><i class="fa fa-bars"></i></button>
-    <button class="search-btn"><i class="fa fa-search"></i></button>
-    <div id="nav-search">
+    <a href="{{ route('login') }}" class="search-btn"><i class="fa fa-user-circle"></i></a>
+    {{-- <div id="nav-search">
     <form>
     <input class="input" name="search" placeholder="Enter your search...">
     </form>
     <button class="nav-close search-close">
     <span></span>
     </button>
-    </div>
+    </div> --}}
     </div>
     
     </div>
@@ -41,18 +41,19 @@
     
     <div id="nav-aside">
     <ul class="nav-aside-menu">
-    <li><a href="index.html">Home</a></li>
+    <li><a href="{{ route('blogs.index') }}">Home</a></li>
     <li class="has-dropdown"><a>Categories</a>
+    @php
+    $headerSideCategories = \App\Models\Category::where('is_active','1')->get();
+    @endphp
     <ul class="dropdown">
-    <li><a href="#">Lifestyle</a></li>
-    <li><a href="#">Fashion</a></li>
-    <li><a href="#">Technology</a></li>
-    <li><a href="#">Travel</a></li>
-    <li><a href="#">Health</a></li>
+        @foreach ($headerSideCategories as $index=>$category)
+        <li><a href="{{ route('blogs.category',$category->uuid) }}">{{ $category->name }}</a></li>
+        @endforeach
     </ul>
     </li>
-    <li><a href="about.html">About Us</a></li>
-    <li><a href="contact.html">Contacts</a></li>
+    <li><a href="{{ route('blogs.about-us') }}">About Us</a></li>
+    <li><a href="{{ route('blogs.contuct-us') }}">Contacts</a></li>
     <li><a href="#">Advertise</a></li>
     </ul>
     <button class="nav-close nav-aside-close"><span></span></button>

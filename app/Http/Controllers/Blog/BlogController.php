@@ -156,5 +156,11 @@ class BlogController extends Controller
 
     }
 
+    public function tags($uuid)
+    {
+        $tag = Tag::where('uuid',$uuid)->where('is_active',1)->first();
+        return view('blog.frontend.tags',compact('tag'));
+    }
+
 
 }

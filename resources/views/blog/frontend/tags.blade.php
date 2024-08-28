@@ -30,15 +30,15 @@
 
 
     @include('blog.frontend.layouts.header')
-    <input type="hidden" id="category_id" value="{{ $category->id }}">
+    <input type="hidden" id="tag_id" value="{{ $tag->id ?? '0' }}">
     <div class="page-header">
       <div class="page-header-bg"
-        style="background-image: url('{{ asset('storage/blog/category/images') }}/{{ $category->image ?? '' }}'); background-repeat: no-repeat;background-size: 100% 550px;"
+        style="background-image: url('{{ asset('storage/blog/tag/images') }}/{{ $tag->image ?? '' }}'); background-repeat: no-repeat;background-size: 100% 550px;"
         data-stellar-background-ratio="0.5"></div>
       <div class="container">
         <div class="row">
           <div class="col-md-offset-1 col-md-10 text-center">
-            <h1 class="text-uppercase">{{ $category->name ?? 'Not Available' }}</h1>
+            <h1 class="text-uppercase">#{{ $tag->title ?? 'Not Available' }}</h1>
           </div>
         </div>
       </div>
@@ -49,17 +49,17 @@
 
         <div class="row">
           <div class="col-md-8">
-            @if ($category != null)
+            @if ($tag != null)
+            {{-- @dd($tag->blogs) --}}
+            @if (count($tag->blogs->where('is_active','1'))>0)
 
-            @if (count($category->blogs->where('is_active','1'))>0)
-
-            @foreach ($category->blogs->where('is_active','1')->random('1') as $index => $blog)
+            @foreach ($tag->blogs->where('is_active','1')->random('1') as $index => $blog)
             <div class="post post-thumb">
               <a class="post-img" href="{{ route('blogs.blogPost',$blog->slug) }}"><img
                   src="{{ asset('storage/blog/images') }}/{{ $blog->image }}" style="height:420px;" alt></a>
               <div class="post-body">
                 <div class="post-category">
-                  <a href="{{ route('blogs.category',$category->uuid) }}">{{ $blog->category->name }}</a>
+                  <a href="{{ route('blogs.category',$blog->category->uuid) }}">{{ $blog->category->name }}</a>
                 </div>
                 <h3 class="post-title title-lg"><a
                     href="{{ route('blogs.blogPost',$blog->slug) }}">{{ $blog->title }}</a></h3>
@@ -72,16 +72,16 @@
             @endforeach
             @endif
             <div class="row">
-              @if (count($category->blogs->where('is_active','1'))>0)
+              @if (count($tag->blogs->where('is_active','1'))>0)
               @php
-              if(count($category->blogs->where('is_active','1'))>5)
+              if(count($tag->blogs->where('is_active','1'))>5)
               {
               $value = 5;
               }else{
-              $value = count($category->blogs->where('is_active','1'));
+              $value = count($tag->blogs->where('is_active','1'));
               }
               @endphp
-              @foreach ($category->blogs->where('is_active','1')->random($value) as $index => $blog)
+              @foreach ($tag->blogs->where('is_active','1')->random($value) as $index => $blog)
               @if ($index != 0)
               <div class="col-md-6">
                 <div class="post">
@@ -89,7 +89,7 @@
                       src="{{ asset('storage/blog/images') }}/{{ $blog->image }}" style="height:200px;" alt></a>
                   <div class="post-body">
                     <div class="post-category">
-                      <a href="{{ route('blogs.category',$category->uuid) }}">{{ $blog->category->name }}</a>
+                      <a href="{{ route('blogs.category',$blog->category->uuid) }}">{{ $blog->category->name }}</a>
                     </div>
                     <h3 class="post-title"><a href="{{ route('blogs.blogPost',$blog->slug) }}">{{ $blog->title }}</a>
                     </h3>
@@ -102,8 +102,18 @@
               </div>
               @if ($index == 2)
               <div class="clearfix visible-md visible-lg"></div>
+              <div class="col-md-12 section-row text-center">
+                <a href="#" style="display: inline-block;margin: auto;">
+                  <img class="img-responsive" src="{{ asset('blog') }}/img/ad-2.jpg" alt>
+                </a>
+              </div>
               @endif
               @if ($index == 4)
+              <div class="col-md-12 section-row text-center">
+                <a href="#" style="display: inline-block;margin: auto;">
+                  <img class="img-responsive" src="{{ asset('blog') }}/img/ad-2.jpg" alt>
+                </a>
+              </div>
               @break
               @endif
               @endif
@@ -204,75 +214,87 @@
         loadBlog();
         $(document).on('click','#load-more-btn', loadBlog); 
       });
-  function loadBlog()
-{
-  
-  $('#load-more-btn').html('Loading...');
-  var blogIds = [];
-  var blogIdInputs = document.querySelectorAll('input[name="blog_id"]');  
-  blogIdInputs.forEach(function(input) {
-      blogIds.push(input.value);
-  });
-  let data = {};
-  data.category_id  = $('#category_id').val();
-  data.blogIds  = blogIds;
-  console.log('data');
+      function loadBlog() {
+    $('#load-more-btn').html('Loading...');
+    var blogIds = [];
+    var blogIdInputs = document.querySelectorAll('input[name="blog_id"]');  
+    blogIdInputs.forEach(function(input) {
+        blogIds.push(input.value);
+    });
+    let data = {};
+    data.tag_id  = $('#tag_id').val();
+    data.blogIds  = blogIds;
 
-  $.ajax({
-      url      : `/api/blogs/load-blogs-categorized`,
-      method   : "GET",
-      data     : data,
-      dataType : "JSON",
-      headers: {
-          'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-      },
-      success     : function (data)
-      {
-        console.log(data);
-        
-        $.each(data.data, function(key, value) {
-          let date = new Date(value.created_at);
-          
-          // Define month names
-          const months = ["JAN", "FEB", "MAR", "APR", "MAY", "JUN", "JUL", "AUG", "SEP", "OCT", "NOV", "DEC"];
-          
-          // Format the date
-          let formattedDate = date.getDate() + '-' + months[date.getMonth()] + '-' + date.getFullYear();
-          var url = '{{ route("blogs.blogPost", ":id") }}';
-          url = url.replace(':id', value.slug);
-        console.log(value);
-        $('#post_lists').append(
-          `
-          <div class="post post-row">
-          <input type="hidden" name="blog_id" value="${value.id}">
-          <a class="post-img" href="${url}"><img src="{{ asset('storage/blog/images') }}/${value.image}" style="height:170px;" alt></a>
-          <div class="post-body">
-          <div class="post-category">
-          <a href="">${value.category.name}</a>
-          </div>
-          <h3 class="post-title"><a href="${url}">${value.title}</a></h3>
-          <ul class="post-meta">
-          <li><a href="author.html">${value.creator.name}</a></li>
-          <li>${formattedDate}</li>
-          </ul>
-          </div>
-          </div>
-          `
-        );
-        });
-        if (data.endofBlog == 'end') {
-          $('#load-more-btn').html('All Blogs Loaded');
-          document.getElementById('load-more-btn').style.visibility="hidden";
-        } else {
-          $('#load-more-btn').html('Load More');
+    $.ajax({
+        url      : `/api/blogs/load-blogs-tagged`,
+        method   : "GET",
+        data     : data,
+        dataType : "JSON",
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        },
+        success: function (data) {
+            console.log(data);
+            var postCount = 0;
+
+            $.each(data.data, function(key, value) {
+                let date = new Date(value.created_at);
+                
+                // Define month names
+                const months = ["JAN", "FEB", "MAR", "APR", "MAY", "JUN", "JUL", "AUG", "SEP", "OCT", "NOV", "DEC"];
+                
+                // Format the date
+                let formattedDate = date.getDate() + '-' + months[date.getMonth()] + '-' + date.getFullYear();
+                var url = '{{ route("blogs.blogPost", ":id") }}';
+                url = url.replace(':id', value.slug);
+                console.log(value);
+
+                $('#post_lists').append(
+                    `
+                    <div class="post post-row">
+                        <input type="hidden" name="blog_id" value="${value.id}">
+                        <a class="post-img" href="${url}"><img src="{{ asset('storage/blog/images') }}/${value.image}" style="height:170px;" alt></a>
+                        <div class="post-body">
+                            <div class="post-category">
+                                <a href="">${value.category.name}</a>
+                            </div>
+                            <h3 class="post-title"><a href="${url}">${value.title}</a></h3>
+                            <ul class="post-meta">
+                                <li><a href="author.html">${value.creator.name}</a></li>
+                                <li>${formattedDate}</li>
+                            </ul>
+                        </div>
+                    </div>
+                    `
+                );
+
+                postCount++;
+                if (postCount % 5 == 0) {
+                    $('#post_lists').append(
+                        `
+                        <div class="section-row text-center">
+                            <a href="#" style="display: inline-block;margin: auto;">
+                                <img class="img-responsive" src="{{ asset('blog') }}/img/ad-2.jpg" alt>
+                            </a>
+                        </div>
+                        `
+                    );
+                }
+            });
+
+            if (data.endofBlog == 'end') {
+                $('#load-more-btn').html('All Blogs Loaded');
+                document.getElementById('load-more-btn').style.visibility = "hidden";
+            } else {
+                $('#load-more-btn').html('Load More');
+            }
+        },
+        error(err) {
+            console.log('error');
         }
-      },
-      error(err){
-          console.log('error')
-
-      }
-  });
+    });
 }
+
     </script>
   </body>
 

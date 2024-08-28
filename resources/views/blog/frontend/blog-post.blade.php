@@ -21,15 +21,18 @@
 
     <style>
       .descrption img {
-        width:100% !important;
+        width: 100% !important;
       }
     </style>
   </head>
-
+{{-- @dd() --}}
   <body>
     @include('blog.frontend.layouts.header')
     <a id="scrollButton"></a>
     @if ($blog != null)
+    @php
+      $commentBlog = $blog
+    @endphp
     <input type="hidden" value="{{ $blog->id }}" id="blog_id">
     <div id="post-header" class="page-header">
       <div class="page-header-bg"
@@ -86,7 +89,7 @@
                   @if (count($blog->tags)>0)
                   @foreach ($blog->tags as $tag)
                   @if ($tag->tag->is_active == 1)
-                  <li><a href="#">{{ $tag->tag->title }}</a></li>
+                  <li><a href="{{ route('blogs.tags',$tag->tag->uuid) }}">{{ $tag->tag->title }}</a></li>
                   @endif
                   @endforeach
                   @else
@@ -123,199 +126,171 @@
                 </div>
               </div>
             </div>
-      <div>
-        <div class="section-title">
-          <h3 class="title">Related Posts</h3>
-        </div>
-        <div class="row">
-          @php
-          if (count($blog->category->blogs)>=3) {
-          $relatedPost = $blog->category->blogs->random('3');
-          }else{
-          $relatedPost = $blog->category->blogs->random(count($blog->category->blogs));
-          }
-          @endphp
-          @foreach ($relatedPost as $index=>$blog)
-          <div class="col-md-4">
-            <div class="post post-sm">
-              <a class="post-img" href="{{ route('blogs.blogPost',$blog->slug) }}"><img
-                  src="{{ asset('storage/blog/images') }}/{{ $blog->image }}" style="height:140px;" alt></a>
-              <div class="post-body">
-                <div class="post-category">
-                  <a href="{{ route('blogs.category',$blog->category->uuid) }}">{{ $blog->category->name }}</a>
+            <div>
+              <div class="section-title">
+                <h3 class="title">Related Posts</h3>
+              </div>
+              <div class="row">
+                @php
+                if (count($blog->category->blogs)>=3) {
+                $relatedPost = $blog->category->blogs->random('3');
+                }else{
+                $relatedPost = $blog->category->blogs->random(count($blog->category->blogs));
+                }
+                @endphp
+                @foreach ($relatedPost as $index=>$blog)
+                <div class="col-md-4">
+                  <div class="post post-sm">
+                    <a class="post-img" href="{{ route('blogs.blogPost',$blog->slug) }}"><img
+                        src="{{ asset('storage/blog/images') }}/{{ $blog->image }}" style="height:140px;" alt></a>
+                    <div class="post-body">
+                      <div class="post-category">
+                        <a href="{{ route('blogs.category',$blog->category->uuid) }}">{{ $blog->category->name }}</a>
+                      </div>
+                      <h3 class="post-title title-sm"><a
+                          href="{{ route('blogs.blogPost',$blog->slug) }}">{{ implode(' ', array_slice(explode(' ', $blog->title), 0, 15)) }}</a>
+                      </h3>
+                      <ul class="post-meta">
+                        <li><a href="author.html">{{ $blog->creator->name }}</a></li>
+                        <li>{{ $blog->created_at->format('d-M-Y') }}</li>
+                      </ul>
+                    </div>
+                  </div>
                 </div>
-                <h3 class="post-title title-sm"><a
-                    href="{{ route('blogs.blogPost',$blog->slug) }}">{{ implode(' ', array_slice(explode(' ', $blog->title), 0, 15)) }}</a>
-                </h3>
-                <ul class="post-meta">
-                  <li><a href="author.html">{{ $blog->creator->name }}</a></li>
-                  <li>{{ $blog->created_at->format('d-M-Y') }}</li>
+                @php
+                if($index == 2)
+                {
+                break;
+                }
+                @endphp
+                @endforeach
+
+
+              </div>
+            </div>
+
+
+            <div class="section-row">
+              <div class="section-title">
+                <h3 class="title">{{ count($commentBlog->comments->where('parent_id', '0')) }} Comments</h3>
+              </div>
+              <div class="post-comments">
+                @foreach ($commentBlog->comments->where('parent_id', '0') as $comment)
+                <div class="media">
+                  <div class="media-left">
+                    <img class="media-object" src="{{ asset('storage/profile/images') }}/{{ $comment->user->image }}" style="height:50px;width:50px;" alt>
+                  </div>
+                  <div class="media-body">
+                    <div class="media-heading">
+                      <h4>{{ $comment->user->name }}</h4>
+                      <span class="time">{{ $comment->created_at->diffForHumans(); }}</span>
+                    </div>
+                    <p>{{ $comment->comment }}</p>
+                    <input type="hidden" class="parent_id" value="{{ $comment->id }}">
+                    <a style="cursor:pointer;" data-parent_id="{{ $comment->id }}" class="reply">Reply</a>
+                    {{-- @dd($comment->replies) --}}
+                    @if (count($comment->replies)>0)
+                    <div style="margin-top:3px;" class="rep" data-parent_id="{{ $comment->id }}">
+
+                      @foreach ($comment->replies as $replies)
+                      <div class="media media-author">
+                        <div class="media-left">
+                          <img class="media-object" src="{{ asset('storage/profile/images') }}/{{ $comment->user->image }}" style="height:50px;width:50px;" alt>
+                        </div>
+                        <div class="media-body">
+                          <div class="media-heading">
+                            <h4>{{ $replies->user->name }}</h4>
+                            <span class="time">{{ $replies->created_at->diffForHumans(); }}</span>
+                          </div>
+                          <p>{{ $replies->comment }}</p>
+                          <a style="cursor: pointer;" data-parent_id="{{ $comment->id }}" class="reply">Reply</a>
+                        </div>
+                      </div>
+                      @endforeach
+                    </div>
+                    @endif
+
+                  </div>
+                </div>
+                @endforeach
+              </div>
+            </div>
+
+
+            <div class="section-row">
+              <div class="section-title">
+                <h3 class="title">Leave a reply</h3>
+              </div>
+              <input type="hidden" id="user_id" value="{{ auth()->user()->id ?? 0 }}">
+              <input type="hidden" id="parent_id" value="0">
+              <div class="row">
+                <div class="col-md-12">
+                  <div class="form-group">
+                    <textarea id="comment" class="input" name="comment" placeholder="comment"></textarea>
+                  </div>
+                </div>
+                <div class="col-md-12">
+                  <button id="comment_submit" data-parent_id="0" class="primary-button">Submit</button>
+                </div>
+              </div>
+            </div>
+
+          </div>
+          <div class="col-md-4">
+
+            <div class="aside-widget text-center">
+              <a href="#" style="display: inline-block;margin: auto;">
+                <img class="img-responsive" src="{{ asset('blog') }}/img/ad-3.jpg" alt>
+              </a>
+            </div>
+
+
+            <div class="aside-widget">
+              <div class="section-title">
+                <h2 class="title">Social Media</h2>
+              </div>
+              <div class="social-widget">
+                <ul>
+                  <li>
+                    <a href="#" class="social-facebook">
+                      <i class="fa fa-facebook"></i>
+                      <span>21.2K<br>Followers</span>
+                    </a>
+                  </li>
+                  <li>
+                    <a href="#" class="social-twitter">
+                      <i class="fa fa-twitter"></i>
+                      <span>10.2K<br>Followers</span>
+                    </a>
+                  </li>
+                  <li>
+                    <a href="#" class="social-google-plus">
+                      <i class="fa fa-google-plus"></i>
+                      <span>5K<br>Followers</span>
+                    </a>
+                  </li>
                 </ul>
               </div>
             </div>
+
+
+
+            @include('blog.frontend.layouts.category-section')
+            @include('blog.frontend.layouts.newsletter')
+            @include('blog.frontend.layouts.popular-posts')
+            @include('blog.frontend.layouts.image-section')
+
+
+            <div class="aside-widget text-center">
+              <a href="#" style="display: inline-block;margin: auto;">
+                <img class="img-responsive" src="{{ asset('blog') }}/img/ad-1.jpg" alt>
+              </a>
+            </div>
+
           </div>
-          @php
-          if($index == 2)
-          {
-          break;
-          }
-          @endphp
-          @endforeach
-
-
         </div>
+
       </div>
-
-
-      {{-- <div class="section-row">
-<div class="section-title">
-<h3 class="title">3 Comments</h3>
-</div>
-<div class="post-comments">
-
-<div class="media">
-<div class="media-left">
-<img class="media-object" src="{{ asset('blog') }}/img/avatar-2.jpg" alt>
-    </div>
-    <div class="media-body">
-      <div class="media-heading">
-        <h4>John Doe</h4>
-        <span class="time">5 min ago</span>
-      </div>
-      <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore
-        magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
-        consequat.</p>
-      <a href="#" class="reply">Reply</a>
-
-      <div class="media media-author">
-        <div class="media-left">
-          <img class="media-object" src="{{ asset('blog') }}/img/avatar-1.jpg" alt>
-        </div>
-        <div class="media-body">
-          <div class="media-heading">
-            <h4>John Doe</h4>
-            <span class="time">5 min ago</span>
-          </div>
-          <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et
-            dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex
-            ea commodo consequat.</p>
-          <a href="#" class="reply">Reply</a>
-        </div>
-      </div>
-
-    </div>
-    </div>
-
-
-    <div class="media">
-      <div class="media-left">
-        <img class="media-object" src="{{ asset('blog') }}/img/avatar-3.jpg" alt>
-      </div>
-      <div class="media-body">
-        <div class="media-heading">
-          <h4>John Doe</h4>
-          <span class="time">5 min ago</span>
-        </div>
-        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et
-          dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea
-          commodo consequat.</p>
-        <a href="#" class="reply">Reply</a>
-      </div>
-    </div>
-
-    </div>
-    </div> --}}
-
-
-    {{-- <div class="section-row">
-<div class="section-title">
-<h3 class="title">Leave a reply</h3>
-</div>
-<form class="post-reply">
-<div class="row">
-<div class="col-md-12">
-<div class="form-group">
-<textarea class="input" name="message" placeholder="Message"></textarea>
-</div>
-</div>
-<div class="col-md-4">
-<div class="form-group">
-<input class="input" type="text" name="name" placeholder="Name">
-</div>
-</div>
-<div class="col-md-4">
-<div class="form-group">
-<input class="input" type="email" name="email" placeholder="Email">
-</div>
-</div>
-<div class="col-md-4">
-<div class="form-group">
-<input class="input" type="text" name="website" placeholder="Website">
-</div>
-</div>
-<div class="col-md-12">
-<button class="primary-button">Submit</button>
-</div>
-</div>
-</form>
-</div> --}}
-
-    </div>
-    <div class="col-md-4">
-
-      <div class="aside-widget text-center">
-        <a href="#" style="display: inline-block;margin: auto;">
-          <img class="img-responsive" src="{{ asset('blog') }}/img/ad-3.jpg" alt>
-        </a>
-      </div>
-
-
-      <div class="aside-widget">
-        <div class="section-title">
-          <h2 class="title">Social Media</h2>
-        </div>
-        <div class="social-widget">
-          <ul>
-            <li>
-              <a href="#" class="social-facebook">
-                <i class="fa fa-facebook"></i>
-                <span>21.2K<br>Followers</span>
-              </a>
-            </li>
-            <li>
-              <a href="#" class="social-twitter">
-                <i class="fa fa-twitter"></i>
-                <span>10.2K<br>Followers</span>
-              </a>
-            </li>
-            <li>
-              <a href="#" class="social-google-plus">
-                <i class="fa fa-google-plus"></i>
-                <span>5K<br>Followers</span>
-              </a>
-            </li>
-          </ul>
-        </div>
-      </div>
-
-
-
-      @include('blog.frontend.layouts.category-section')
-      @include('blog.frontend.layouts.newsletter')
-      @include('blog.frontend.layouts.popular-posts')
-      @include('blog.frontend.layouts.image-section')
-
-
-      <div class="aside-widget text-center">
-        <a href="#" style="display: inline-block;margin: auto;">
-          <img class="img-responsive" src="{{ asset('blog') }}/img/ad-1.jpg" alt>
-        </a>
-      </div>
-
-    </div>
-    </div>
-
-    </div>
 
     </div>
 
@@ -423,19 +398,122 @@
     <script src="{{ asset('blog') }}/js/main.js"></script>
     <script>
       var btn = $('#scrollButton');
+      $(window).scroll(function() {
+      if ($(window).scrollTop() > 300) {
+        btn.addClass('show');
+      } else {
+        btn.removeClass('show');
+      }
+      });
+      btn.on('click', function(e) {
+      e.preventDefault();
+      $('html, body').animate({scrollTop:0}, '300');
+      });
+    </script>
+    <script>
+      $(document).ready(function() {
+        $(document).on('click','.reply_submit', addComment);
+        $(document).on('click','#comment_submit', addComment);
+        $('.reply').on('click', function() {
+          console.log('reply');
+            var replySection = `
+                <div class="section-row removable" style="margin-top:5px;">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <textarea id="comment" class="input" name="comment" placeholder="comment"></textarea>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <button id="reply_submit" data-parent_id="${$(this).data('parent_id')}" class="primary-button reply_submit">Submit</button>
+                        </div>
+                    </div>
+                </div>
+            `;
 
-	$(window).scroll(function() {
-	if ($(window).scrollTop() > 300) {
-		btn.addClass('show');
-	} else {
-		btn.removeClass('show');
-	}
-	});
-
-	btn.on('click', function(e) {
-	e.preventDefault();
-	$('html, body').animate({scrollTop:0}, '300');
-	});
+            $(this).after(replySection);
+        });
+      });
+      function addComment()
+      {
+        let data = {};
+        data.comment  = $('#comment').val();
+        data.user_id  = $('#user_id').val();
+        data.blog_id  = $('#blog_id').val();
+        data.parent_id  = $(this).data('parent_id');
+        console.log(data);
+        if(data.user_id == 0 ){
+          $('#comment_submit').html('You Must Log In Before Making A Comment');
+          return false;
+        }
+        if(data.comment == '' ){
+          $('#comment_submit').html('Comment Can not Be Empty');
+          return false;
+        }
+        apiCall(data);
+      }
+      function apiCall(data)
+      {
+        $.ajax({
+            url      : `/api/blogs/add-comment`,
+            method   : "GET",
+            data     : data,
+            dataType : "JSON",
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            },
+            success     : function (data)
+            {
+              $('#comment').val('');
+              if(data.placement == 'main')
+              {
+                var newComment = `
+                <div class="media">
+                  <div class="media-left">
+                    <img class="media-object" src="${data.comment.user.image}" style="height:50px;width:50px;" alt>
+                  </div>
+                  <div class="media-body">
+                    <div class="media-heading">
+                      <h4>${data.comment.user.name}</h4>
+                      <span class="time">${data.comment.created_at}</span>
+                    </div>
+                    <p>${data.comment.comment}</p>
+                    <input type="hidden" value="${data.comment.id}">
+                    <a style="cursor:pointer;" data-parent_id="${data.comment.parent_id}" class="reply">Reply</a>
+                  </div>
+                </div>
+              `;
+              $('.post-comments').append(newComment);
+              }else if(data.placement == 'sub')
+              {
+                console.log(data.comment.parent_id);
+                var parentElement = $(`.rep[data-parent_id="${data.comment.parent_id}"]`);
+                console.log(parentElement);
+                var newComment = `
+                <div class="media media-author">
+                  <div class="media-left">
+                    <img class="media-object" src="${data.comment.user.image}" style="height:50px;width:50px;" alt>
+                  </div>
+                  <div class="media-body">
+                    <div class="media-heading">
+                      <h4>${data.comment.user.name}</h4>
+                      <span class="time">${data.comment.created_at}</span>
+                    </div>
+                    <p>${data.comment.comment}</p>
+                    <a style="cursor: pointer;" data-parent_id="${data.comment.parent_id}" class="reply">Reply</a>
+                  </div>
+                </div>
+              `;
+              $('.removable').hide();
+              parentElement.append(newComment);
+              }
+              
+            },
+            error(err){
+                console.log('error')
+            }
+        });
+      }
     </script>
   </body>
 

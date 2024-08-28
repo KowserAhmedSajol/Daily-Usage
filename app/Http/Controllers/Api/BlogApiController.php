@@ -86,5 +86,39 @@ class BlogApiController extends Controller
             "endofBlog" =>  $endofBlog,
         ], 200);
     }
+    public function loadBlogsTagged(Request $request)
+    {
+        // Initialize the excluded blog IDs
+        $excludedBlogIds = $request->blogIds ? $request->blogIds : array("0");
+    
+        // Retrieve blogs associated with the given tag_id, excluding specified blogs
+        $blogs = Blog::whereHas('tags', function ($query) use ($request) {
+                $query->where('blog_tag.tag_id', $request->tag_id);
+            })
+            ->whereNotIn('id', $excludedBlogIds)
+            ->with('category', 'tags', 'creator')
+            ->orderBy('created_at', 'DESC')
+            ->where('is_active', '1')
+            ->select('id', 'category_id', 'title', 'slug', 'image', 'serial', 'is_active', 'created_by', 'created_at')
+            ->get();
+    
+        // Determine the number of blogs to return
+        if (count($blogs) >= 10) {
+            $blogs = $blogs->random(10);
+            $endofBlog = '';
+        } else {
+            $blogs = $blogs->random(count($blogs));
+            $endofBlog = 'end';
+        }
+    
+        // Return the response as JSON
+        return response()->json([
+            "msg" => 'Successful',
+            "data" => $blogs,
+            "endofBlog" => $endofBlog,
+        ], 200);
+    }
+    
+
 
 }

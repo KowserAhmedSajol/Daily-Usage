@@ -9,6 +9,7 @@ use App\Http\Controllers\Api\IncomeApiController;
 use App\Http\Controllers\Api\ReportApiController;
 use App\Http\Controllers\Api\ProfileApiController;
 use App\Http\Controllers\Api\BlogApiController;
+use App\Http\Controllers\Api\CommentApiController;
 
 /*
 |--------------------------------------------------------------------------
@@ -55,7 +56,11 @@ Route::middleware(['web', 'auth'])->group(function () {
     });
     Route::prefix('blogs')->group(function(){
         Route::post('/get-sub-category', [BlogApiController::class, 'getSubCategory']);
-        Route::get('/load-blogs', [BlogApiController::class, 'loadBlogs']);
-        Route::get('/load-blogs-categorized', [BlogApiController::class, 'loadBlogsCategorized']);
     });
+});
+Route::prefix('blogs')->group(function(){
+    Route::get('/load-blogs', [BlogApiController::class, 'loadBlogs']);
+    Route::get('/load-blogs-categorized', [BlogApiController::class, 'loadBlogsCategorized']);
+    Route::get('/load-blogs-tagged', [BlogApiController::class, 'loadBlogsTagged']);
+    Route::get('/add-comment', [CommentApiController::class, 'addComment']);
 });

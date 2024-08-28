@@ -39,7 +39,7 @@
     <div class="tags-widget">
     <ul>
     @foreach ($footerTags as $tag)
-        <li><a href="#">{{ $tag->title }}</a></li>
+        <li><a href="{{ route('blogs.tags',$tag->uuid) }}">{{ $tag->title }}</a></li>
     @endforeach
     {{-- <li><a href="#">Lifestyle</a></li>
     <li><a href="#">Blog</a></li>

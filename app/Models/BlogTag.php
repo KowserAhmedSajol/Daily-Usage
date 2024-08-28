@@ -13,4 +13,9 @@ class BlogTag extends Model
     {
         return $this->belongsTo(Tag::class);
     }
+    public function blog()
+    {
+        return $this->belongsTo(Blof::class);
+    }
+
 }
