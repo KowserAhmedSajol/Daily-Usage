@@ -17,7 +17,12 @@ Types
 	</div>
 
 	<div class="card-body">
-
+		@php
+			$divisionOptions = $types->pluck('type', 'id')->toArray();
+		@endphp
+		{{-- <x-select
+			table="tags"
+		/> --}}
 		<div class="row">
 			<div class="col-md-12">
 				<div class="form-group form-group-float">
@@ -156,32 +161,32 @@ Types
 				return false;
 			}
 			
-				$.ajax({
-					url      : `/api/types/add`,
-					method   : "POST",
-					data     : data,
-					dataType : "JSON",
-					headers: {
-						'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-					},
-					success     : function (data)
-					{
-						console.log('success');
-						loadTable();
-						$('#type').val('');
-						var addBtnIcon = document.getElementById('addBtnIcon');
-						addBtnIcon.classList.remove('icon-spinner9');
-						addBtnIcon.classList.remove('spinner');
-						addBtnIcon.classList.add('icon-plus3');
-					},
-					error(err){
-						console.log('error')
-						$("#po").select2({
-							data: ""
-						});
-						$("#po").prop('disabled', true);
-					}
-				}); 
+			$.ajax({
+				url      : `/api/types/add`,
+				method   : "POST",
+				data     : data,
+				dataType : "JSON",
+				headers: {
+					'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+				},
+				success     : function (data)
+				{
+					console.log('success');
+					loadTable();
+					$('#type').val('');
+					var addBtnIcon = document.getElementById('addBtnIcon');
+					addBtnIcon.classList.remove('icon-spinner9');
+					addBtnIcon.classList.remove('spinner');
+					addBtnIcon.classList.add('icon-plus3');
+				},
+				error(err){
+					console.log('error')
+					$("#po").select2({
+						data: ""
+					});
+					$("#po").prop('disabled', true);
+				}
+			}); 
 		}
 </script>
 @endsection

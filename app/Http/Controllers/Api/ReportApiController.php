@@ -49,47 +49,43 @@ class ReportApiController extends Controller
     }
     public function typeWiseReport(Request $request)
     {
-        
-       
         $startDate = Carbon::createFromDate($request->year, $request->month, 1)->startOfMonth();
         $endDate = Carbon::createFromDate($request->year, $request->month, 1)->endOfMonth();
-
-        $usageData = Usage::where('user_id',Auth::id())
-        ->whereBetween(DB::raw("STR_TO_DATE(date, '%d %M, %Y')"), [$startDate, $endDate])
-        ->select(DB::raw("DATE_FORMAT(STR_TO_DATE(date, '%d %M, %Y'), '%Y-%m-%d') as date"),)
-        ->groupBy(DB::raw("DATE_FORMAT(STR_TO_DATE(date, '%d %M, %Y'), '%Y-%m-%d')"))
-        ->get();
+    
+        // Query Usage and eager load 'type' relationship
+        $usageData = Usage::where('user_id', Auth::id())
+            ->whereBetween(DB::raw("STR_TO_DATE(date, '%d %M, %Y')"), [$startDate, $endDate])
+            ->with('type') // Eager load 'type' relationship
+            ->select(DB::raw("DATE_FORMAT(STR_TO_DATE(date, '%d %M, %Y'), '%Y-%m-%d') as date"), 'type_id', 'actual_amount', 'estimated_amount')
+            ->get()
+            ->groupBy(function($item) {
+                // Format date as "01 October, 2024"
+                return Carbon::parse($item->date)->format('d F, Y');
+            });
+    
         $dateArray = [];
-
-        foreach ($usageData as $data) {
-            $dateArray[Carbon::createFromFormat('Y-M-d', $data->date)->format('d M, Y')] = null; 
-        }
-        foreach($dateArray as $key =>$date)
-        {
-            $usageData = Usage::where('user_id',Auth::id())
-            ->where('date',$key)
-            ->select('type_id')
-            ->groupBy('type_id')
-            ->get();
-            foreach ($usageData as $data) {
-                $mainData = Usage::where('user_id',Auth::id())->where('date',$key)->where('type_id',$data->type_id)->get()->toArray();
-                $dateArray[$key][$data->type->type] = $mainData;
+    
+        // Process each grouped date
+        foreach ($usageData as $date => $usages) {
+            $dateArray[$date] = [];
+    
+            // Group by type_id and accumulate the data for each type
+            foreach ($usages as $usage) {
+                if ($usage->type) {
+                    $typeName = $usage->type->type;
+                    $dateArray[$date][$typeName][] = [
+                        'actual_amount' => $usage->actual_amount,
+                        'estimated_amount' => $usage->estimated_amount,
+                    ];
+                }
             }
         }
-        // $usageData = Usage::where('user_id',Auth::id())
-        // ->select(
-        //     DB::raw("DATE_FORMAT(STR_TO_DATE(date, '%d %b, %Y'), '%Y-%m-%d') as date"),
-        //     DB::raw("SUM(actual_amount) as total_actual_amount"),
-        //     DB::raw("SUM(estimated_amount) as total_estimated_amount")
-        // )
-        // ->whereBetween(DB::raw("STR_TO_DATE(date, '%d %b, %Y')"), [$startDate, $endDate])
-        // ->groupBy(DB::raw("DATE_FORMAT(STR_TO_DATE(date, '%d %b, %Y'), '%Y-%m-%d')"))
-        // ->get();
-        // dd($dateArray);
+    
         return response()->json([
-            "usages" =>  $dateArray,
+            "usages" => $dateArray,
         ], 200);
     }
+    
 
     public function typeAndMonthWiseReport(Request $request)
     {

@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Comment;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
 
 class CommentApiController extends Controller
 {
@@ -37,5 +39,21 @@ class CommentApiController extends Controller
             ],
         ],
         ], 200);
+    }
+    public function createType(Request $request)
+    {
+        try {
+            $data = DB::table($request->input('table'))->insertGetId([
+                'uuid' => Str::uuid(),
+                $request->input('columnName') => $request->input('value'),
+                'created_at' => now(),
+                'updated_at' => now()
+            ]);
+
+            return response()->json(['success' => true, 'id' => $data]);
+        } catch (\Exception $e) {
+            \Log::error('Error creating type: ' . $e->getMessage());
+            return response()->json(['success' => false], 500);
+        }
     }
 }

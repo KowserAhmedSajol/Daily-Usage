@@ -36,6 +36,7 @@ Route::middleware(['web', 'auth'])->group(function () {
     Route::prefix('types')->group(function(){
         Route::post('/add', [TypeApiController::class, 'store']);
         Route::get('/all', [TypeApiController::class, 'index']);
+        Route::post('/create', [CommentApiController::class, 'createType']);
     });
     
     Route::prefix('usage')->group(function(){
@@ -63,4 +64,5 @@ Route::prefix('blogs')->group(function(){
     Route::get('/load-blogs-categorized', [BlogApiController::class, 'loadBlogsCategorized']);
     Route::get('/load-blogs-tagged', [BlogApiController::class, 'loadBlogsTagged']);
     Route::get('/add-comment', [CommentApiController::class, 'addComment']);
+
 });

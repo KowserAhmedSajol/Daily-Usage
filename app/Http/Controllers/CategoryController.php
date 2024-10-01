@@ -34,6 +34,7 @@ class CategoryController extends Controller
      */
     public function store(Request $request)
     {
+        // $ipAddress = $request->ip();
         if ($request->hasFile('image')) {
             $fileNameWithExtension = $request->file('image')->getClientOriginalName();
             $fileName = pathinfo($fileNameWithExtension, PATHINFO_FILENAME);
