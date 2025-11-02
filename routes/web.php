@@ -14,6 +14,8 @@ use App\Http\Controllers\TagController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\Blog\BlogController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\ExampleController;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -33,6 +35,12 @@ use Illuminate\Support\Facades\Route;
 //     // dd('ffd');
 //     return view('blog.index');
 // });
+
+Route::resource('examples', ExampleController::class);
+// Soft delete routes
+Route::get('examples-trash', [ExampleController::class, 'trash'])->name('examples.trash');
+Route::get('examples-restore/{id}', [ExampleController::class, 'restore'])->name('examples.restore');
+Route::delete('examples-force-delete/{id}', [ExampleController::class, 'forceDelete'])->name('examples.forceDelete');
 
 Route::get('/profile', [ProfileController::class, 'profile'])->middleware(['auth', 'verified'])->name('profile');
 Route::get('/dashboard', [DashboardController::class, 'index'])->middleware(['auth', 'verified'])->name('dashboard');
@@ -86,7 +94,7 @@ Route::middleware('auth')->group(function () {
         Route::get('/destroy/{id}', [TagController::class, 'destroy'])->name('destroy');
         Route::get('/toggle-status/{uuid}', [TagController::class, 'toggleStatus'])->name('toggle-status');
     });
-    
+
 });
 Route::get('/', [BlogController::class, 'index'])->name('index');
 Route::group(['prefix' => 'blogs', 'as' => 'blogs.'], function () {

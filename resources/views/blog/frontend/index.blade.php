@@ -7,7 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <title>Blog Page: Home</title>
-
+    <link rel="icon" href="{{ asset('icon.png') }}" type="image/gif">
     <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700%7CMuli:400,700" rel="stylesheet">
 
     <link type="text/css" rel="stylesheet" href="{{ asset('blog') }}/css/bootstrap.min.css" />
@@ -378,13 +378,13 @@
     <script>
       $(document).ready(function() {
       loadBlog();
-		  $(document).on('click','#load-more-btn', loadBlog);  
+		  $(document).on('click','#load-more-btn', loadBlog);
 	});
   	function loadBlog()
 	{
     var blogIds = [];
     var blogIdInputs = document.querySelectorAll('input[name="blog_id"]');
-    
+
     blogIdInputs.forEach(function(input) {
         blogIds.push(input.value);
     });
@@ -434,7 +434,7 @@
           } else {
             $('#load-more-btn').html('Load More');
           }
-          
+
         },
         error(err){
           console.log('error')
